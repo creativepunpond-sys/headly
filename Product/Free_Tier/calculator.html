@@ -1158,25 +1158,34 @@
                     // Calculate required headcount based on operating hours
                     const dailyVolume = data.volume / 30; // Monthly to daily
                     const aht = 1 / cpd; // AHT in hours per contact
-                    const totalHoursNeeded = dailyVolume * aht; // Total hours needed per day
+                    const totalWorkHours = dailyVolume * aht; // Total work hours needed per day
                     
-                    // For 24/7: need 3 shifts (24/8 = 3 shifts)
-                    // For other hours: need shifts to cover operating hours
-                    let shiftsNeeded = 1;
+                    // Calculate how many agents needed based on operating hours
+                    // Agent works 8 hours per day, but need to cover all operating hours
+                    let coverageMultiplier = 1;
+                    
                     if (hoursType === '24_7') {
-                        shiftsNeeded = 3; // 3 eight-hour shifts for 24/7
+                        // Need 3 full shifts to cover 24 hours (24/8 = 3)
+                        // Plus overlap for handoffs and breaks
+                        coverageMultiplier = 3.5; // 3 shifts + 0.5 for overlap
+                    } else if (hoursType === 'extended') {
+                        // 14 hours needs 2 shifts (14/8 = 1.75, round to 2)
+                        coverageMultiplier = 2;
                     } else {
-                        // For other schedules, calculate how many 8-hour shifts needed
-                        shiftsNeeded = Math.ceil(dailyOperatingHours / 8);
+                        // 9 hours fits in 1 shift with some overlap
+                        coverageMultiplier = 1.2; // Single shift + 20% buffer
                     }
                     
-                    // Base headcount per shift
-                    const baseHCPerShift = totalHoursNeeded / 8; // 8-hour shift
-                    const totalBaseHC = baseHCPerShift * shiftsNeeded;
+                    // Base headcount: work hours divided by productive hours per agent (8hr * occupancy)
+                    const productiveHoursPerAgent = 8 * occupancy;
+                    const baseHC = totalWorkHours / productiveHoursPerAgent;
                     
-                    // Apply shrinkage and occupancy
-                    const afterShrinkage = totalBaseHC / (1 - shrinkage);
-                    const required = Math.ceil(afterShrinkage / occupancy);
+                    // Multiply by coverage needs (shifts)
+                    const withCoverage = baseHC * coverageMultiplier;
+                    
+                    // Apply shrinkage (sick leave, breaks, training, etc.)
+                    const afterShrinkage = withCoverage / (1 - shrinkage);
+                    const required = Math.ceil(afterShrinkage);
 
                     totalRequired += required;
                     monthlyResults.push({
