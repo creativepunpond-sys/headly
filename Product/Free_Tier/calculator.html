@@ -1155,36 +1155,44 @@
 
             monthlyData.forEach(data => {
                 if (data.volume > 0) {
-                    // Calculate required headcount based on operating hours
+                    // Step 1: Calculate workload-based headcount
                     const dailyVolume = data.volume / 30; // Monthly to daily
                     const aht = 1 / cpd; // AHT in hours per contact
                     const totalWorkHours = dailyVolume * aht; // Total work hours needed per day
                     
-                    // Calculate how many agents needed based on operating hours
-                    // Agent works 8 hours per day, but need to cover all operating hours
-                    let coverageMultiplier = 1;
+                    // Productive hours per agent per day (8 hours * occupancy)
+                    const productiveHoursPerAgent = 8 * occupancy;
+                    const workloadBasedHC = totalWorkHours / productiveHoursPerAgent;
+                    
+                    // Step 2: Determine minimum coverage requirement
+                    let minimumCoverage = 0;
+                    let shiftsPerDay = 1;
                     
                     if (hoursType === '24_7') {
-                        // Need 3 full shifts to cover 24 hours (24/8 = 3)
-                        // Plus overlap for handoffs and breaks
-                        coverageMultiplier = 3.5; // 3 shifts + 0.5 for overlap
+                        shiftsPerDay = 3; // 3 eight-hour shifts
+                        minimumCoverage = 4; // At least 4 agents per shift for minimum coverage
                     } else if (hoursType === 'extended') {
-                        // 14 hours needs 2 shifts (14/8 = 1.75, round to 2)
-                        coverageMultiplier = 2;
+                        shiftsPerDay = 2; // 2 shifts for 14 hours
+                        minimumCoverage = 3; // At least 3 agents per shift
                     } else {
-                        // 9 hours fits in 1 shift with some overlap
-                        coverageMultiplier = 1.2; // Single shift + 20% buffer
+                        shiftsPerDay = 1; // Single shift for 9 hours
+                        minimumCoverage = 2; // At least 2 agents for coverage
                     }
                     
-                    // Base headcount: work hours divided by productive hours per agent (8hr * occupancy)
-                    const productiveHoursPerAgent = 8 * occupancy;
-                    const baseHC = totalWorkHours / productiveHoursPerAgent;
+                    // Step 3: Calculate agents needed per shift
+                    let agentsPerShift = workloadBasedHC / shiftsPerDay;
+                    agentsPerShift = Math.max(agentsPerShift, minimumCoverage); // Use minimum if workload is low
                     
-                    // Multiply by coverage needs (shifts)
-                    const withCoverage = baseHC * coverageMultiplier;
+                    // Step 4: Total agents for all shifts
+                    let totalAgents = agentsPerShift * shiftsPerDay;
                     
-                    // Apply shrinkage (sick leave, breaks, training, etc.)
-                    const afterShrinkage = withCoverage / (1 - shrinkage);
+                    // Step 5: Add buffer for days off (7-day operation, 5-day workweek)
+                    // Need ~40% more agents to cover days off (7/5 = 1.4)
+                    const dayOffMultiplier = hoursType === '24_7' ? 1.4 : 1.2;
+                    totalAgents = totalAgents * dayOffMultiplier;
+                    
+                    // Step 6: Apply shrinkage (sick leave, training, breaks)
+                    const afterShrinkage = totalAgents / (1 - shrinkage);
                     const required = Math.ceil(afterShrinkage);
 
                     totalRequired += required;
