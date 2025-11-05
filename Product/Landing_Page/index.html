@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Headly - คำนวณจำนวนพนักงานใน 5 นาที | Professional Headcount Calculator</title>
     <meta name="description" content="Headly - คำนวณจำนวนพนักงานที่ต้องการสำหรับทีม Customer Service ของคุณภายใน 5 นาที - รองรับ Chat, Phone, LINE, Telegram">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L8PGXF0BE1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);};
+        gtag('js', new Date());
+        gtag('config', 'G-L8PGXF0BE1');
+    </script>
+    
     <style>
         * {
             margin: 0;
@@ -449,6 +459,52 @@
             color: #cbd5e0;
         }
 
+        .comparison-table {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .comparison-table th:first-child {
+            width: 40%;
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .comparison-table .check {
+            color: #48bb78;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .comparison-table .cross {
+            color: #cbd5e0;
+            font-size: 20px;
+        }
+
         .cta {
             padding: 80px 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -505,7 +561,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Headly</div>
+            <a href="/Landing_Page/index.html" style="text-decoration: none;"><div class="logo">Headly</div></a>
             <div class="nav-links">
                 <a href="#features" class="lang-en">Features</a>
                 <a href="#features" class="lang-th" style="display: none;">ฟีเจอร์</a>
@@ -544,11 +600,11 @@
             <p class="lang-th" style="display: none;">เครื่องมือวางแผนกำลังคนมืออาชีพสำหรับทีม Customer Service ในไทยและเอเชียตะวันออกเฉียงใต้</p>
 
             <div class="cta-group">
-                <a href="../../Auth/signup.html" class="btn btn-primary">
-                    <span class="lang-en">Try Free Trial →</span>
+                <a href="/Free_Tier/calculator.html" class="btn btn-primary" onclick="gtag('event', 'cta_click', {'tier': 'free', 'location': 'hero'});">
+                    <span class="lang-en">Try Free Calculator →</span>
                     <span class="lang-th" style="display: none;">ทดลองใช้ฟรี →</span>
                 </a>
-                <a href="#pricing" class="btn btn-secondary">
+                <a href="#pricing" class="btn btn-secondary" onclick="gtag('event', 'view_pricing', {'location': 'hero'});">
                     <span class="lang-en">View Pricing</span>
                     <span class="lang-th" style="display: none;">ดูราคา</span>
                 </a>
@@ -661,19 +717,21 @@
     <!-- Case Study Section -->
     <section class="case-study">
         <div class="case-study-content">
-            <h2 class="section-title lang-en" style="color: white;">Proven by Industry Professionals</h2>
-            <h2 class="section-title lang-th" style="display: none; color: white;">พิสูจน์แล้วโดยผู้เชี่ยวชาญในอุตสาหกรรม</h2>
+            <h2 class="section-title lang-en" style="color: white;">Proven by Global Support Leaders</h2>
+            <h2 class="section-title lang-th" style="display: none; color: white;">พิสูจน์โดยผู้นำด้านซัพพอร์ตระดับโลก</h2>
 
             <p class="case-study-quote lang-en">
-                "This framework was built from real operational battles. When volumes surged, SLAs were on the line, and headcount planning felt like guesswork, I had to create a model that actually worked. Over time, I refined it to accurately forecast CS and KYC/B operation capacity even under pressure. It's practical, fast, and easy to present to leadership. It turned chaos into clarity and saved me countless hours each week.<br><br>
-                Of course, the model helps you plan. The rest depends on whether your management approves the headcount you request; a perfect plan still needs real-world support to run smoothly!"
+                "This planning model isn't theory. It's built from real support operations across Thailand and APAC, covering BPO, e-commerce, finance, logistics, tech, and public services.<br><br>
+                We studied how world-class support teams work across channels like calls, chat, email, LINE, Facebook, and Telegram to build a calculator that reflects actual regional workloads and service complexity.<br><br>
+                When volumes spike or management needs clarity fast, this tool replaces guesswork with data-grounded forecasting. It turns chaotic capacity planning into a clear, confident process you can defend to leadership — and it's helped teams save hours of manual modeling while protecting SLAs and agent well-being."
             </p>
             <p class="case-study-quote lang-th" style="display: none;">
-                "ระบบนี้สร้างขึ้นจากการทำงานจริง เมื่อปริมาณเพิ่มสูงขึ้น SLA ใกล้ถึงเส้นตาย และการวางแผนพนักงานเหมือนการเดา เราจำเป็นต้องสร้างโมเดลที่ใช้งานได้จริง เมื่อเวลาผ่านไป เราปรับปรุงจนสามารถคาดการณ์ CS และ KYC/B ได้แม่นยำแม้ในสถานการณ์กดดัน เปลี่ยนความวุ่นวายให้เป็นความชัดเจน และช่วยประหยัดเวลาได้มากมายทุกสัปดาห์ หรือทุกเดือน<br><br>
-                แน่นอนว่า โมเดลช่วยคุณวางแผน ส่วนที่เหลือขึ้นอยู่กับว่าผู้บริหารจะอนุมัติพนักงานที่คุณขอหรือไม่ แผนที่ดียังต้องได้รับการสนับสนุนจากจริงเพื่อให้ทำงานได้อย่างราบรื่น!"
+                "โมเดลการวางแผนนี้ไม่ใช่ทฤษฎี แต่สร้างขึ้นจากการดำเนินงานซัพพอร์ตจริงทั่วประเทศไทยและเอเชียแปซิฟิก ครอบคลุม BPO, อีคอมเมิร์ซ, การเงิน, โลจิสติกส์, เทคโนโลยี และบริการสาธารณะ<br><br>
+                เราศึกษาวิธีการทำงานของทีมซัพพอร์ตชั้นนำผ่านช่องทางต่างๆ เช่น โทรศัพท์, แชท, อีเมล, LINE, Facebook และ Telegram เพื่อสร้างเครื่องคำนวณที่สะท้อนปริมาณงานและความซับซ้อนของบริการในภูมิภาคจริง<br><br>
+                เมื่อปริมาณงานเพิ่มสูงขึ้นหรือผู้บริหารต้องการความชัดเจนอย่างรวดเร็ว เครื่องมือนี้แทนที่การเดาด้วยการคาดการณ์ที่มีข้อมูลรองรับ เปลี่ยนการวางแผนกำลังคนที่วุ่นวายให้เป็นกระบวนการที่ชัดเจนและมั่นใจ ที่คุณสามารถนำเสนอต่อผู้บริหารได้ — และช่วยให้ทีมประหยัดเวลาในการสร้างโมเดลด้วยตนเอง พร้อมทั้งปกป้อง SLA และความเป็นอยู่ที่ดีของเจ้าหน้าที่"
             </p>
 
-            <p class="case-study-author">-pjoolek-</p>
+            <p class="case-study-author">- pjoolek -</p>
 
             <div class="stats">
                 <div class="stat-item">
@@ -703,6 +761,96 @@
 
             <p class="section-subtitle lang-en">No hidden fees. Cancel anytime. Pay in Thai Baht via PromptPay.</p>
             <p class="section-subtitle lang-th" style="display: none;">ไม่มีค่าธรรมเนียมแอบแฝง ยกเลิกได้ทุกเมื่อ จ่ายเป็นบาทผ่าน PromptPay</p>
+
+            <!-- Feature Comparison Table -->
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="lang-en">Feature</th>
+                            <th class="lang-th" style="display: none;">ฟีเจอร์</th>
+                            <th class="lang-en">Free</th>
+                            <th class="lang-th" style="display: none;">ฟรี</th>
+                            <th>Pro</th>
+                            <th>Pro Max</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="lang-en"><strong>Channels</strong></td>
+                            <td class="lang-th" style="display: none;"><strong>ช่องทาง</strong></td>
+                            <td class="lang-en">1 channel</td>
+                            <td class="lang-th" style="display: none;">1 ช่องทาง</td>
+                            <td class="lang-en">All 6 channels</td>
+                            <td class="lang-th" style="display: none;">ทั้ง 6 ช่องทาง</td>
+                            <td class="lang-en">All 6 channels</td>
+                            <td class="lang-th" style="display: none;">ทั้ง 6 ช่องทาง</td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Forecast Period</td>
+                            <td class="lang-th" style="display: none;">ระยะเวลาคาดการณ์</td>
+                            <td class="lang-en">3 months</td>
+                            <td class="lang-th" style="display: none;">3 เดือน</td>
+                            <td class="lang-en">12 months</td>
+                            <td class="lang-th" style="display: none;">12 เดือน</td>
+                            <td class="lang-en">12 months</td>
+                            <td class="lang-th" style="display: none;">12 เดือน</td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Peak Hours Analysis</td>
+                            <td class="lang-th" style="display: none;">วิเคราะห์ช่วงเวลายอดนิยม</td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Custom KPI Targets</td>
+                            <td class="lang-th" style="display: none;">กำหนด KPI เอง</td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">PDF Export</td>
+                            <td class="lang-th" style="display: none;">ส่งออก PDF</td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en"><strong>Auto Shift Scheduler</strong></td>
+                            <td class="lang-th" style="display: none;"><strong>จัดตารางกะอัตโนมัติ</strong></td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Staff Availability Management</td>
+                            <td class="lang-th" style="display: none;">จัดการความพร้อมพนักงาน</td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Leave & Holiday Planning</td>
+                            <td class="lang-th" style="display: none;">วางแผนลาและวันหยุด</td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="cross">—</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="lang-en">Support</td>
+                            <td class="lang-th" style="display: none;">การสนับสนุน</td>
+                            <td class="lang-en">Community</td>
+                            <td class="lang-th" style="display: none;">ชุมชน</td>
+                            <td class="lang-en">Email</td>
+                            <td class="lang-th" style="display: none;">อีเมล</td>
+                            <td class="lang-en">Priority</td>
+                            <td class="lang-th" style="display: none;">ลำดับความสำคัญ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="pricing-grid">
                 <!-- Free Plan -->
@@ -736,9 +884,9 @@
                         <li class="disabled lang-en">PDF export</li>
                         <li class="disabled lang-th" style="display: none;">ส่งออก PDF</li>
                     </ul>
-                    <a href="../../Auth/signup.html" class="btn btn-primary" style="width: 100%;">
-                        <span class="lang-en">Start Free</span>
-                        <span class="lang-th" style="display: none;">เริ่มใช้ฟรี</span>
+                    <a href="/Free_Tier/calculator.html" class="btn btn-primary" style="width: 100%;" onclick="gtag('event', 'cta_click', {'tier': 'free', 'location': 'pricing_section'});">
+                        <span class="lang-en">Try Free Calculator</span>
+                        <span class="lang-th" style="display: none;">ทดลองใช้ฟรี</span>
                     </a>
                 </div>
 
@@ -769,7 +917,11 @@
                         <li class="lang-en">Email support</li>
                         <li class="lang-th" style="display: none;">ซัพพอร์ตทางอีเมล</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="window.location.href='../../Payment/checkout-pro.html'">
+                    <a href="/Pro_Tier/calculator.html" class="btn btn-secondary" style="width: 100%; margin-bottom: 10px; text-decoration: none;" onclick="gtag('event', 'demo_view', {'tier': 'pro', 'location': 'pricing_section'});">
+                        <span class="lang-en">👁️ Preview Pro Features</span>
+                        <span class="lang-th" style="display: none;">👁️ ดูตัวอย่าง Pro</span>
+                    </a>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="gtag('event', 'upgrade_click', {'tier': 'pro', 'location': 'pricing_section'}); window.location.href='/Payment/checkout-pro.html'">
                         <span class="lang-en">Get Pro</span>
                         <span class="lang-th" style="display: none;">สมัคร Pro</span>
                     </button>
@@ -806,7 +958,11 @@
                         <li class="lang-en">Priority support</li>
                         <li class="lang-th" style="display: none;">ซัพพอร์ตลำดับความสำคัญ</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="window.location.href='../../Payment/checkout.html'">
+                    <a href="/Pro_Max_Tier/calculator.html" class="btn btn-secondary" style="width: 100%; margin-bottom: 10px; text-decoration: none; background: white; color: #667eea;" onclick="gtag('event', 'demo_view', {'tier': 'promax', 'location': 'pricing_section'});">
+                        <span class="lang-en">👁️ Preview Pro Max Features</span>
+                        <span class="lang-th" style="display: none;">👁️ ดูตัวอย่าง Pro Max</span>
+                    </a>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="gtag('event', 'upgrade_click', {'tier': 'promax', 'location': 'pricing_section'}); window.location.href='/Payment/checkout.html'">
                         <span class="lang-en">Get Pro Max</span>
                         <span class="lang-th" style="display: none;">สมัคร Pro Max</span>
                     </button>
@@ -824,9 +980,9 @@
             <p class="lang-en">Start with our free calculator. No credit card required.</p>
             <p class="lang-th" style="display: none;">เริ่มต้นด้วยเครื่องคำนวณฟรี ไม่ต้องใช้บัตรเครดิต</p>
 
-            <a href="../../Auth/signup.html" class="btn btn-primary">
-                <span class="lang-en">Start Free Trial →</span>
-                <span class="lang-th" style="display: none;">เริ่มทดลองใช้ฟรี →</span>
+            <a href="/Free_Tier/calculator.html" class="btn btn-primary" onclick="gtag('event', 'cta_click', {'tier': 'free', 'location': 'bottom_cta'});">
+                <span class="lang-en">Try Free Calculator →</span>
+                <span class="lang-th" style="display: none;">ทดลองคำนวณฟรี →</span>
             </a>
         </div>
     </section>

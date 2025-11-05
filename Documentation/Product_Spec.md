@@ -1,8 +1,8 @@
 # Headly - Product Specification
 
-**Version:** 1.0 (Free Tier MVP)
+**Version:** 1.1 (Updated with 2024 Asia-Pacific Benchmarks)
 **Date:** November 5, 2025
-**Status:** ✅ Free Tier Complete, Pro Tier In Development
+**Status:** ✅ Free Tier Complete (Updated Benchmarks), Pro Tier In Development
 
 ---
 
@@ -164,32 +164,92 @@
 
 ---
 
-## 📊 Industry Defaults
+## 📊 Industry Defaults (2024 Asia-Pacific Benchmarks)
 
-Each industry has pre-configured KPIs based on workforce management best practices:
+**Last Updated:** November 5, 2025  
+**Source:** Based on 2024 Asia-Pacific customer service benchmarks from 1000+ companies  
+**Reference:** `Documentation/Channel_Benchmarks_2024.md`
 
-| Industry | CPD | Shrinkage | Occupancy | Notes |
-|----------|-----|-----------|-----------|-------|
-| BPO / Call Center | 35 | 19% | 90% | High volume, standard metrics |
-| Banking | 25 | 15% | 85% | Lower CPD, more complex interactions |
-| Fintech / Crypto | 30 | 19% | 90% | Based on fintech industry standards |
-| E-commerce | 40 | 20% | 85% | Higher CPD, simpler queries |
-| Hospitality | 35 | 22% | 85% | Seasonal variations |
-| Healthcare | 25 | 18% | 85% | Complex, regulated |
-| Government | 20 | 15% | 80% | Lower productivity expectations |
-| Logistics | 45 | 20% | 90% | High volume, tracking queries |
-| B2B / Enterprise | 30 | 15% | 85% | Lower volume, complex |
-| Other | 35 | 19% | 90% | Default fallback |
+Each industry has pre-configured KPIs based on actual 2024 workforce management data. **CPD now varies by channel** to reflect real-world performance differences.
 
-**Formulas Used:**
+### **Channel-Specific CPD (Contacts Per Day):**
+
+| Industry | Phone | Chat | Email | LINE | Telegram | Facebook |
+|----------|-------|------|-------|------|----------|----------|
+| BPO / Call Center | 40 | 45 | 50 | 38 | 38 | 33 |
+| Banking | 28 | 33 | 38 | 33 | 33 | 33 |
+| Fintech / Crypto | 32 | 34 | 40 | 34 | 33 | 33 |
+| E-commerce | 42 | 50 | 55 | 45 | 38 | 35 |
+| Hospitality | 36 | 40 | 45 | 38 | 35 | 33 |
+| Healthcare | 28 | 35 | 35 | 35 | 33 | 33 |
+| Government | 24 | 30 | 30 | 30 | 30 | 30 |
+| Logistics | 46 | 55 | 55 | 50 | 40 | 35 |
+| B2B / Enterprise | 32 | 35 | 35 | 35 | 35 | 33 |
+| Other | 35 | 40 | 45 | 38 | 38 | 33 |
+
+### **Industry Operating Metrics:**
+
+| Industry | Shrinkage | Occupancy | Notes |
+|----------|-----------|-----------|-------|
+| BPO / Call Center | 19% | 90% | High volume, standard metrics |
+| Banking | 15% | 85% | Complex interactions, compliance |
+| Fintech / Crypto | 19% | 90% | 24/7 operations, night shifts |
+| E-commerce | 20% | 85% | Peak during campaigns (11.11, 12.12) |
+| Hospitality | 22% | 85% | Multilingual, seasonal variations |
+| Healthcare | 18% | 85% | Complex, regulated, privacy concerns |
+| Government | 15% | 80% | Bureaucratic processes |
+| Logistics | 20% | 90% | High volume, simple queries |
+| B2B / Enterprise | 15% | 85% | Complex technical support |
+| Other | 19% | 90% | Default fallback |
+
+### **Channel Characteristics:**
+
+**Phone:**
+- AHT: 5-10 minutes (varies by industry)
+- Best for: Urgent issues, complex problems
+- Lowest CPD due to higher AHT
+
+**Live Chat:**
+- AHT: 8-12 minutes
+- Concurrent: 3-4 chats per agent
+- Best for: Quick questions, e-commerce
+
+**Email:**
+- AHT: 10-15 minutes per ticket
+- Highest CPD (can batch process)
+- Best for: Non-urgent, documentation needed
+
+**LINE (Thailand-specific):**
+- AHT: 10-12 minutes
+- 95% penetration in Thailand
+- Response expectation: <5 minutes
+
+**Telegram:**
+- AHT: 10-15 minutes (crypto often complex)
+- Popular in crypto/fintech
+- Response expectation: <3 minutes
+
+**Facebook Messenger:**
+- AHT: 10-15 minutes
+- Popular in retail/e-commerce
+- Response expectation: <5 minutes
+
+---
+
+### **Calculation Formulas:**
 
 ```
 Weekly Volume = Monthly Volume ÷ 4.33
-AHT (Average Handling Time) = 7.5 hours ÷ CPD
+AHT (Average Handling Time) = 7.5 hours ÷ CPD (channel-specific)
 Workload = Weekly Volume × AHT
 Base HC = Workload ÷ 37.5 hours/week
 After Shrinkage = Base HC ÷ (1 - Shrinkage %)
 Required HC = ROUNDUP(After Shrinkage ÷ Occupancy)
+```
+
+**Multi-channel Blended AHT (Pro Tier):**
+```
+Blended AHT = Σ(Channel Volume × Channel AHT) / Total Volume
 ```
 
 ---

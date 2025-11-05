@@ -515,10 +515,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">
-                <span class="logo-text-en">Headly</span>
-                <span class="logo-text-th" style="display: none;">เฮดลี่</span>
-            </div>
+            <a href="/Landing_Page/index.html" style="text-decoration: none;">
+                <div class="logo">
+                    <span class="logo-text-en">Headly</span>
+                    <span class="logo-text-th" style="display: none;">เฮดลี่</span>
+                </div>
+            </a>
             <div class="lang-toggle">
                 <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
                 <button class="lang-btn" onclick="switchLanguage('th')">ไทย</button>
@@ -740,8 +742,13 @@
                 <div class="step-header">
                     <h2 class="step-title lang-en">What's your expected volume?</h2>
                     <h2 class="step-title lang-th" style="display: none;">ปริมาณงานที่คาดการณ์คือ?</h2>
-                    <p class="step-subtitle lang-en">Enter your forecasted interactions for the next 3 months</p>
-                    <p class="step-subtitle lang-th" style="display: none;">ใส่ปริมาณการติดต่อที่คาดการณ์ใน 3 เดือนข้างหน้า</p>
+                    <p class="step-subtitle lang-en">Pre-filled with typical volumes for your industry & channel</p>
+                    <p class="step-subtitle lang-th" style="display: none;">กรอกไว้แล้วตามปริมาณโดยเฉลี่ยของอุตสาหกรรมและช่องทางของคุณ</p>
+                </div>
+
+                <div class="info-box">
+                    <p class="lang-en"><strong>💡 Smart Defaults:</strong> We've pre-filled typical monthly volumes based on your industry and channel. Feel free to adjust these to match your actual forecast.</p>
+                    <p class="lang-th" style="display: none;"><strong>💡 ค่าเริ่มต้นอัจฉริยะ:</strong> เรากรอกปริมาณรายเดือนตามมาตรฐานของอุตสาหกรรมและช่องทางของคุณไว้แล้ว คุณสามารถปรับแต่งได้ตามต้องการ</p>
                 </div>
 
                 <div class="month-inputs">
@@ -853,7 +860,7 @@
                         <li class="lang-th" style="display: none;">รายงาน PDF สำหรับผู้บริหาร</li>
                     </ul>
 
-                    <button class="btn-upgrade" onclick="window.location.href='../../Payment/checkout-pro.html'">
+                    <button class="btn-upgrade" onclick="window.location.href='../Payment/checkout-pro.html'">
                         <span class="lang-en">Upgrade to Pro - ฿999/month</span>
                         <span class="lang-th" style="display: none;">อัพเกรดเป็น Pro - ฿999/เดือน</span>
                     </button>
@@ -892,18 +899,59 @@
             }
         }
 
-        // Industry defaults
+        // Industry defaults (Updated with 2024 Asia-Pacific Benchmarks)
+        // Source: Channel_Benchmarks_2024.md
         const industryDefaults = {
-            bpo: { cpd: 35, shrinkage: 0.19, occupancy: 0.90 },
-            banking: { cpd: 25, shrinkage: 0.15, occupancy: 0.85 },
-            fintech: { cpd: 30, shrinkage: 0.19, occupancy: 0.90 },
-            ecommerce: { cpd: 40, shrinkage: 0.20, occupancy: 0.85 },
-            hospitality: { cpd: 35, shrinkage: 0.22, occupancy: 0.85 },
-            healthcare: { cpd: 25, shrinkage: 0.18, occupancy: 0.85 },
-            government: { cpd: 20, shrinkage: 0.15, occupancy: 0.80 },
-            logistics: { cpd: 45, shrinkage: 0.20, occupancy: 0.90 },
-            b2b: { cpd: 30, shrinkage: 0.15, occupancy: 0.85 },
-            other: { cpd: 35, shrinkage: 0.19, occupancy: 0.90 }
+            bpo: { 
+                cpd: { phone: 40, chat: 45, email: 50, line: 38, telegram: 38, facebook: 33 },
+                shrinkage: 0.19, 
+                occupancy: 0.90 
+            },
+            banking: { 
+                cpd: { phone: 28, chat: 33, email: 38, line: 33, telegram: 33, facebook: 33 },
+                shrinkage: 0.15, 
+                occupancy: 0.85 
+            },
+            fintech: { 
+                cpd: { phone: 32, chat: 34, email: 40, line: 34, telegram: 33, facebook: 33 },
+                shrinkage: 0.19, 
+                occupancy: 0.90 
+            },
+            ecommerce: { 
+                cpd: { phone: 42, chat: 50, email: 55, line: 45, telegram: 38, facebook: 35 },
+                shrinkage: 0.20, 
+                occupancy: 0.85 
+            },
+            hospitality: { 
+                cpd: { phone: 36, chat: 40, email: 45, line: 38, telegram: 35, facebook: 33 },
+                shrinkage: 0.22, 
+                occupancy: 0.85 
+            },
+            healthcare: { 
+                cpd: { phone: 28, chat: 35, email: 35, line: 35, telegram: 33, facebook: 33 },
+                shrinkage: 0.18, 
+                occupancy: 0.85 
+            },
+            government: { 
+                cpd: { phone: 24, chat: 30, email: 30, line: 30, telegram: 30, facebook: 30 },
+                shrinkage: 0.15, 
+                occupancy: 0.80 
+            },
+            logistics: { 
+                cpd: { phone: 46, chat: 55, email: 55, line: 50, telegram: 40, facebook: 35 },
+                shrinkage: 0.20, 
+                occupancy: 0.90 
+            },
+            b2b: { 
+                cpd: { phone: 32, chat: 35, email: 35, line: 35, telegram: 35, facebook: 33 },
+                shrinkage: 0.15, 
+                occupancy: 0.85 
+            },
+            other: { 
+                cpd: { phone: 35, chat: 40, email: 45, line: 38, telegram: 38, facebook: 33 },
+                shrinkage: 0.19, 
+                occupancy: 0.90 
+            }
         };
 
         function updateIndustryInfo() {
@@ -912,10 +960,12 @@
 
             if (industry && industryDefaults[industry]) {
                 const defaults = industryDefaults[industry];
+                // Get average CPD across channels for display
+                const avgCpd = Math.round((defaults.cpd.phone + defaults.cpd.chat + defaults.cpd.email) / 3);
                 document.getElementById('industryInfoText').textContent =
-                    `Target: ${defaults.cpd} interactions/day, Shrinkage: ${(defaults.shrinkage * 100).toFixed(0)}%, Occupancy: ${(defaults.occupancy * 100).toFixed(0)}%`;
+                    `Target: ${avgCpd} interactions/day (varies by channel), Shrinkage: ${(defaults.shrinkage * 100).toFixed(0)}%, Occupancy: ${(defaults.occupancy * 100).toFixed(0)}%`;
                 document.getElementById('industryInfoTextTh').textContent =
-                    `เป้าหมาย: ${defaults.cpd} ครั้ง/วัน, Shrinkage: ${(defaults.shrinkage * 100).toFixed(0)}%, Occupancy: ${(defaults.occupancy * 100).toFixed(0)}%`;
+                    `เป้าหมาย: ${avgCpd} ครั้ง/วัน (แตกต่างตามช่องทาง), Shrinkage: ${(defaults.shrinkage * 100).toFixed(0)}%, Occupancy: ${(defaults.occupancy * 100).toFixed(0)}%`;
                 infoBox.style.display = 'block';
             } else {
                 infoBox.style.display = 'none';
@@ -933,6 +983,48 @@
                         box.checked = false;
                     }
                 });
+            }
+        }
+
+        // Smart default volumes based on industry and channel
+        // Based on typical small-medium team sizes (10-20 agents)
+        const volumeDefaults = {
+            bpo: { phone: 9000, chat: 10000, email: 11000, line: 8500, telegram: 8500, facebook: 7500 },
+            banking: { phone: 6000, chat: 7000, email: 8500, line: 7000, telegram: 7000, facebook: 7000 },
+            fintech: { phone: 7000, chat: 7500, email: 9000, line: 7500, telegram: 7500, facebook: 7000 },
+            ecommerce: { phone: 9500, chat: 11000, email: 12500, line: 10000, telegram: 8500, facebook: 8000 },
+            hospitality: { phone: 8000, chat: 9000, email: 10000, line: 8500, telegram: 8000, facebook: 7500 },
+            healthcare: { phone: 6000, chat: 7500, email: 8000, line: 7500, telegram: 7000, facebook: 7000 },
+            government: { phone: 5500, chat: 6500, email: 7000, line: 6500, telegram: 6500, facebook: 6500 },
+            logistics: { phone: 10500, chat: 12500, email: 12500, line: 11000, telegram: 9000, facebook: 8000 },
+            b2b: { phone: 7000, chat: 7500, email: 8000, line: 7500, telegram: 7500, facebook: 7000 },
+            other: { phone: 8000, chat: 9000, email: 10000, line: 8500, telegram: 8500, facebook: 7500 }
+        };
+
+        // Update volume defaults when moving to step 4
+        function updateVolumeDefaults() {
+            const industry = document.getElementById('industry').value;
+            const selectedChannel = document.querySelector('input[name="channel"]:checked');
+            
+            if (industry && selectedChannel && volumeDefaults[industry]) {
+                const channelType = selectedChannel.value;
+                const baseVolume = volumeDefaults[industry][channelType] || 8000;
+                
+                // Add natural variation (+/- 5-10%)
+                const month1 = baseVolume;
+                const month2 = Math.round(baseVolume * 0.95); // Slight decrease
+                const month3 = Math.round(baseVolume * 1.05); // Slight increase
+                
+                document.getElementById('volume_month1').value = month1;
+                document.getElementById('volume_month2').value = month2;
+                document.getElementById('volume_month3').value = month3;
+                
+                // Also update current team size based on CPD
+                const defaults = industryDefaults[industry];
+                const cpd = defaults.cpd[channelType] || 35;
+                const avgVolume = Math.round((month1 + month2 + month3) / 3);
+                const estimatedTeam = Math.max(5, Math.round(avgVolume / (cpd * 22))); // 22 working days
+                document.getElementById('current_team').value = estimatedTeam;
             }
         }
 
@@ -955,6 +1047,11 @@
                     alert(currentLang === 'en' ? 'Please select at least one channel' : 'กรุณาเลือกอย่างน้อย 1 ช่องทาง');
                     return;
                 }
+            }
+
+            // Update volume defaults when entering step 4
+            if (step === 4) {
+                updateVolumeDefaults();
             }
 
             // Hide current step
@@ -1005,9 +1102,17 @@
                 return;
             }
 
+            // Get selected channel
+            const selectedChannel = document.querySelector('input[name="channel"]:checked');
+            if (!selectedChannel) {
+                alert(currentLang === 'en' ? 'Please select a channel' : 'กรุณาเลือกช่องทาง');
+                return;
+            }
+            const channelType = selectedChannel.value;
+
             // Get industry defaults
             const defaults = industryDefaults[industry] || industryDefaults.other;
-            const cpd = defaults.cpd;
+            const cpd = defaults.cpd[channelType] || defaults.cpd.phone; // Use channel-specific CPD
             const shrinkage = defaults.shrinkage;
             const occupancy = defaults.occupancy;
 

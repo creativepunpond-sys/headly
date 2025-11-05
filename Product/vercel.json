@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "headly",
+  "builds": [
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/Landing_Page/index.html"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 🚀 Headly - SaaS Business Launch
 
-**Status:** ✅ **Free Tier Complete & Ready to Launch**
+**Status:** ✅ **Free Tier Complete & Ready to Launch** (v1.1 - Updated with 2024 Benchmarks)
 **Date:** November 5, 2025
 **Market:** Thailand + Southeast Asia
 
@@ -10,12 +10,13 @@
 
 A professional **headcount forecasting calculator** for customer service teams in Southeast Asia, starting with Thailand market.
 
-### **✅ Completed Today:**
+### **✅ Completed:**
 
-1. **Free Tier Calculator** - Fully functional, production-ready
+1. **Free Tier Calculator** - Fully functional, production-ready (**v1.1 with 2024 benchmarks**)
 2. **Landing Page** - Professional marketing site (Thai + English)
 3. **Product Specification** - Complete feature roadmap
 4. **Market Research** - Thailand market analysis showing STRONG opportunity
+5. **2024 Benchmark Data** - Research-backed channel & industry metrics (NEW!)
 
 ---
 
@@ -25,17 +26,19 @@ A professional **headcount forecasting calculator** for customer service teams i
 Headly/
 ├── Product/
 │   ├── Free_Tier/
-│   │   └── calculator.html          ✅ FREE CALCULATOR (Ready to use!)
+│   │   └── calculator.html          ✅ FREE CALCULATOR (v1.1 - 2024 benchmarks!)
 │   │
 │   └── Landing_Page/
 │       └── index.html                ✅ LANDING PAGE (Marketing site)
 │
 ├── Documentation/
-│   └── Product_Spec.md               ✅ Complete product specification
+│   ├── Product_Spec.md               ✅ Complete product specification (v1.1)
+│   └── Channel_Benchmarks_2024.md    ✅ 2024 Asia-Pacific benchmarks (NEW!)
 │
 ├── Business_Plan/
 │   └── Thailand_Market_Analysis.md   ✅ Market research & strategy
 │
+├── UPGRADE_SUMMARY_NOV2025.md         ✅ What's new in v1.1
 └── README.md                          ✅ This file
 ```
 
@@ -51,6 +54,8 @@ Headly/
 - ✅ Thai + English language toggle
 - ✅ 10 industry templates (BPO, Banking, Fintech, E-commerce, etc.)
 - ✅ Multi-channel selection (Chat, Phone, LINE, Telegram, Email, Facebook)
+- ✅ **Channel-specific calculations** (NEW! Different CPD per channel)
+- ✅ **2024 Asia-Pacific benchmarks** (NEW! Research-backed data)
 - ✅ Operating hours presets (24/7, Business Hours, Extended)
 - ✅ 3-month headcount forecasting
 - ✅ Gap analysis (how many agents needed)
@@ -87,10 +92,18 @@ Headly/
 
 📂 **Product Spec:** `/Documentation/Product_Spec.md`
 - Complete feature breakdown (Free, Pro, Business, Enterprise tiers)
+- **Channel-specific CPD tables** (NEW! 10 industries × 6 channels)
 - Industry defaults and formulas
 - Technical architecture
 - Revenue projections
 - Go-to-market strategy
+
+📂 **2024 Benchmarks:** `/Documentation/Channel_Benchmarks_2024.md` (NEW!)
+- Asia-Pacific customer service benchmarks
+- Channel-specific metrics (Phone, Chat, Email, LINE, Telegram, Facebook)
+- Industry-specific CPD, shrinkage, occupancy rates
+- Based on data from 1000+ companies
+- 8 authoritative sources cited
 
 📂 **Market Analysis:** `/Business_Plan/Thailand_Market_Analysis.md`
 - Thailand BPO market size: USD $1.34B → $2.86B
