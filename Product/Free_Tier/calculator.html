@@ -1120,6 +1120,23 @@
             }
             const channelType = selectedChannel.value;
 
+            // Get operating hours
+            const selectedHours = document.querySelector('input[name="operating_hours"]:checked');
+            if (!selectedHours) {
+                alert(currentLang === 'en' ? 'Please select operating hours' : 'กรุณาเลือกเวลาทำงาน');
+                return;
+            }
+            const hoursType = selectedHours.value;
+
+            // Define operating hours per day
+            const operatingHoursMap = {
+                '24_7': 24,      // 24 hours
+                '9_18': 9,       // 9 hours (09:00-18:00)
+                '8_17': 9,       // 9 hours (08:00-17:00)
+                'extended': 14   // 14 hours (08:00-22:00)
+            };
+            const dailyOperatingHours = operatingHoursMap[hoursType] || 24;
+
             // Get industry defaults
             const defaults = industryDefaults[industry] || industryDefaults.other;
             const cpd = defaults.cpd[channelType] || defaults.cpd.phone; // Use channel-specific CPD
@@ -1138,12 +1155,27 @@
 
             monthlyData.forEach(data => {
                 if (data.volume > 0) {
-                    // Calculate required headcount
-                    const weeklyVolume = data.volume / 4.33;
-                    const aht = 7.5 / cpd; // 7.5 hours per day
-                    const workload = weeklyVolume * aht;
-                    const baseHC = workload / 37.5; // 37.5 hours per week
-                    const afterShrinkage = baseHC / (1 - shrinkage);
+                    // Calculate required headcount based on operating hours
+                    const dailyVolume = data.volume / 30; // Monthly to daily
+                    const aht = 1 / cpd; // AHT in hours per contact
+                    const totalHoursNeeded = dailyVolume * aht; // Total hours needed per day
+                    
+                    // For 24/7: need 3 shifts (24/8 = 3 shifts)
+                    // For other hours: need shifts to cover operating hours
+                    let shiftsNeeded = 1;
+                    if (hoursType === '24_7') {
+                        shiftsNeeded = 3; // 3 eight-hour shifts for 24/7
+                    } else {
+                        // For other schedules, calculate how many 8-hour shifts needed
+                        shiftsNeeded = Math.ceil(dailyOperatingHours / 8);
+                    }
+                    
+                    // Base headcount per shift
+                    const baseHCPerShift = totalHoursNeeded / 8; // 8-hour shift
+                    const totalBaseHC = baseHCPerShift * shiftsNeeded;
+                    
+                    // Apply shrinkage and occupancy
+                    const afterShrinkage = totalBaseHC / (1 - shrinkage);
                     const required = Math.ceil(afterShrinkage / occupancy);
 
                     totalRequired += required;
