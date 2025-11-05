@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headly Pro Max - Auto Shift Scheduler | จัดตารางกะพนักงาน</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Noto Sans Thai';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pro-max-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .lang-toggle {
+            background: #f7fafc;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-toggle:hover {
+            background: #e2e8f0;
+        }
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            font-weight: 600;
+            color: #718096;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-description {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-field, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .input-field:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .staff-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .staff-table th,
+        .staff-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .staff-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .staff-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background: #f56565;
+        }
+
+        .file-upload {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .shift-template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .template-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .template-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .template-card.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .template-card h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .template-card p {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            font-size: 14px;
+        }
+
+        .calendar-day:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .calendar-day.holiday {
+            background: #fef5e7;
+            border-color: #f39c12;
+            color: #d68910;
+        }
+
+        .calendar-day.leave {
+            background: #fde8ef;
+            border-color: #e91e63;
+            color: #c2185b;
+        }
+
+        .calendar-header {
+            font-weight: 600;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .shift-result {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .shift-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .shift-table th,
+        .shift-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+
+        .shift-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .shift-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .shift-morning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .shift-afternoon {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .shift-night {
+            background: #d1d3e2;
+            color: #383d41;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-grid {
+                gap: 3px;
+            }
+
+            .calendar-day {
+                font-size: 12px;
+                padding: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <span class="logo">Headly</span>
+                <span class="pro-max-badge">⭐ PRO MAX</span>
+            </div>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <button class="lang-toggle" onclick="toggleLanguage()">
+                    <span class="lang-en">🇹🇭 ไทย</span>
+                    <span class="lang-th" style="display: none;">🇬🇧 EN</span>
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='../../Dashboard/index.html'">
+                    Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('scheduler')">
+                    🗓️ <span class="lang-en">Auto Shift Scheduler</span>
+                    <span class="lang-th" style="display: none;">ระบบจัดตารางกะอัตโนมัติ</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('staff')">
+                    👥 <span class="lang-en">Staff Management</span>
+                    <span class="lang-th" style="display: none;">จัดการพนักงาน</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('templates')">
+                    📋 <span class="lang-en">Shift Templates</span>
+                    <span class="lang-th" style="display: none;">เทมเพลตกะ</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('calendar')">
+                    📅 <span class="lang-en">Leave & Holidays</span>
+                    <span class="lang-th" style="display: none;">วันหยุด & ลา</span>
+                </button>
+            </div>
+
+            <!-- Tab 1: Auto Shift Scheduler -->
+            <div id="tab-scheduler" class="tab-content active">
+                <div class="form-section">
+                    <h2 class="section-title">
+                        🤖 <span class="lang-en">AI-Powered Shift Generation</span>
+                        <span class="lang-th" style="display: none;">สร้างตารางกะด้วย AI</span>
+                    </h2>
+                    <p class="section-description">
+                        <span class="lang-en">Generate optimized shift schedules based on your headcount forecast, staff availability, and business constraints.</span>
+                        <span class="lang-th" style="display: none;">สร้างตารางกะที่เหมาะสมตามจำนวนพนักงานที่คาดการณ์ ความพร้อมของพนักงาน และข้อจำกัดทางธุรกิจ</span>
+                    </p>
+
+                    <!-- Upload Forecast Section -->
+                    <div style="margin-bottom: 25px;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 10px;">
+                            <span class="lang-en">📊 Upload Headcount Forecast</span>
+                            <span class="lang-th" style="display: none;">📊 อัปโหลดการคาดการณ์พนักงาน</span>
+                        </label>
+                        <div class="file-upload" onclick="document.getElementById('forecastUpload').click()" style="padding: 20px;">
+                            <input type="file" id="forecastUpload" accept=".csv,.xlsx" onchange="handleForecastUpload(event)">
+                            <div style="font-size: 36px; margin-bottom: 10px;">📤</div>
+                            <div style="font-weight: 600; margin-bottom: 5px; font-size: 14px;">
+                                <span class="lang-en">Upload Forecast File (CSV or Excel)</span>
+                                <span class="lang-th" style="display: none;">อัปโหลดไฟล์การคาดการณ์ (CSV หรือ Excel)</span>
+                            </div>
+                            <div style="font-size: 12px; color: #718096;">
+                                <span class="lang-en">File should contain: Date, Required Staff, Shift Type</span>
+                                <span class="lang-th" style="display: none;">ไฟล์ควรมี: วันที่, จำนวนพนักงาน, ประเภทกะ</span>
+                            </div>
+                        </div>
+                        <div id="forecastFileName" style="margin-top: 10px; font-size: 14px; color: #667eea; display: none;"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">📊 Or Select Saved Forecast</span>
+                                <span class="lang-th" style="display: none;">📊 หรือเลือกการคาดการณ์ที่บันทึกไว้</span>
+                            </label>
+                            <select id="forecastSource">
+                                <option value="">Select saved forecast...</option>
+                                <option value="manual">Manual input</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">📅 Schedule Period</span>
+                                <span class="lang-th" style="display: none;">📅 ช่วงเวลาจัดตาราง</span>
+                            </label>
+                            <select id="schedulePeriod">
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="quarter">Next Quarter</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">👤 Total Staff Required</span>
+                                <span class="lang-th" style="display: none;">👤 จำนวนพนักงานที่ต้องการ</span>
+                            </label>
+                            <input type="number" id="totalStaff" class="input-field" placeholder="e.g., 50" value="50">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">⏰ Operating Hours</span>
+                                <span class="lang-th" style="display: none;">⏰ เวลาทำการ</span>
+                            </label>
+                            <select id="operatingHours">
+                                <option value="24/7">24/7 - Round the clock</option>
+                                <option value="business">Business Hours (9AM-6PM)</option>
+                                <option value="extended">Extended Hours (8AM-10PM)</option>
+                                <option value="custom">Custom Hours</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <span class="lang-en">🎯 Shift Optimization Goal</span>
+                            <span class="lang-th" style="display: none;">🎯 เป้าหมายการจัดตาราง</span>
+                        </label>
+                        <select id="optimizationGoal">
+                            <option value="balanced">Balanced - Fair distribution across all staff</option>
+                            <option value="efficiency">Efficiency - Minimize gaps and overlaps</option>
+                            <option value="preference">Preference - Prioritize staff preferences</option>
+                            <option value="cost">Cost - Minimize overtime and premium hours</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button class="btn-primary" onclick="generateShifts()">
+                            ⚡ <span class="lang-en">Generate Shifts</span>
+                            <span class="lang-th" style="display: none;">สร้างตารางกะ</span>
+                        </button>
+                        <button class="btn-secondary" onclick="clearSchedule()">
+                            <span class="lang-en">Clear</span>
+                            <span class="lang-th" style="display: none;">ล้าง</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="shiftResults" style="display: none;">
+                    <div class="shift-result">
+                        <h3 style="margin-bottom: 20px;">
+                            <span class="lang-en">📋 Generated Schedule</span>
+                            <span class="lang-th" style="display: none;">📋 ตารางที่สร้าง</span>
+                        </h3>
+                        
+                        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                            <div style="background: #f0f4ff; padding: 15px; border-radius: 8px; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #667eea;">50</div>
+                                <div style="font-size: 13px; color: #718096;">Total Staff Scheduled</div>
+                            </div>
+                            <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #48bb78;">168</div>
+                                <div style="font-size: 13px; color: #718096;">Total Hours Covered</div>
+                            </div>
+                            <div style="background: #fef5e7; padding: 15px; border-radius: 8px; flex: 1;">
+                                <div style="font-size: 24px; font-weight: bold; color: #f39c12;">95%</div>
+                                <div style="font-size: 13px; color: #718096;">Coverage Efficiency</div>
+                            </div>
+                        </div>
+
+                        <table class="shift-table" id="scheduleTable">
+                            <thead>
+                                <tr>
+                                    <th>Staff Name</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
+                                    <th>Sunday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Generated by JS -->
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 30px; display: flex; gap: 15px;">
+                            <button class="btn-primary" onclick="downloadSchedule()">
+                                📥 <span class="lang-en">Download as PDF</span>
+                                <span class="lang-th" style="display: none;">ดาวน์โหลด PDF</span>
+                            </button>
+                            <button class="btn-secondary" onclick="exportExcel()">
+                                📊 <span class="lang-en">Export to Excel</span>
+                                <span class="lang-th" style="display: none;">ส่งออก Excel</span>
+                            </button>
+                            <button class="btn-secondary" onclick="saveSchedule()">
+                                💾 <span class="lang-en">Save Schedule</span>
+                                <span class="lang-th" style="display: none;">บันทึก</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Staff Management -->
+            <div id="tab-staff" class="tab-content">
+                <div class="form-section">
+                    <h2 class="section-title">
+                        👥 <span class="lang-en">Staff Availability Management</span>
+                        <span class="lang-th" style="display: none;">จัดการความพร้อมของพนักงาน</span>
+                    </h2>
+                    <p class="section-description">
+                        <span class="lang-en">Upload staff list and define their availability, preferences, and constraints.</span>
+                        <span class="lang-th" style="display: none;">อัปโหลดรายชื่อพนักงานและกำหนดความพร้อม ความต้องการ และข้อจำกัด</span>
+                    </p>
+
+                    <!-- Upload Section -->
+                    <div class="file-upload" onclick="document.getElementById('csvUpload').click()">
+                        <input type="file" id="csvUpload" accept=".csv,.xlsx" onchange="handleStaffUpload(event)">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📤</div>
+                        <div style="font-weight: 600; margin-bottom: 8px;">
+                            <span class="lang-en">Upload Staff List (CSV or Excel)</span>
+                            <span class="lang-th" style="display: none;">อัปโหลดรายชื่อพนักงาน (CSV หรือ Excel)</span>
+                        </div>
+                        <div style="font-size: 14px; color: #718096;">
+                            <span class="lang-en">or drag and drop file here</span>
+                            <span class="lang-th" style="display: none;">หรือลากและวางไฟล์ที่นี่</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 20px 0; text-align: center;">
+                        <span style="color: #718096; font-size: 14px;">
+                            <span class="lang-en">or</span>
+                            <span class="lang-th" style="display: none;">หรือ</span>
+                        </span>
+                    </div>
+
+                    <button class="btn-secondary" onclick="addStaffManually()" style="width: 100%;">
+                        ➕ <span class="lang-en">Add Staff Manually</span>
+                        <span class="lang-th" style="display: none;">เพิ่มพนักงานด้วยตนเอง</span>
+                    </button>
+                </div>
+
+                <!-- Staff List -->
+                <div class="form-section">
+                    <h3 style="margin-bottom: 20px;">
+                        <span class="lang-en">📋 Current Staff List</span>
+                        <span class="lang-th" style="display: none;">📋 รายชื่อพนักงานปัจจุบัน</span>
+                    </h3>
+
+                    <div id="staffListContainer">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👥</div>
+                            <p>
+                                <span class="lang-en">No staff added yet. Upload a CSV file or add staff manually.</span>
+                                <span class="lang-th" style="display: none;">ยังไม่มีพนักงาน อัปโหลดไฟล์ CSV หรือเพิ่มด้วยตนเอง</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Shift Templates -->
+            <div id="tab-templates" class="tab-content">
+                <div class="form-section">
+                    <h2 class="section-title">
+                        📋 <span class="lang-en">Shift Template Library</span>
+                        <span class="lang-th" style="display: none;">ไลบรารีเทมเพลตกะ</span>
+                    </h2>
+                    <p class="section-description">
+                        <span class="lang-en">Choose from pre-built shift templates or create your own custom templates.</span>
+                        <span class="lang-th" style="display: none;">เลือกจากเทมเพลตกะที่สร้างไว้ หรือสร้างเทมเพลตของคุณเอง</span>
+                    </p>
+
+                    <div class="shift-template-grid">
+                        <div class="template-card" onclick="selectTemplate('24-7')">
+                            <h4>🌐 24/7 Coverage</h4>
+                            <p>3 shifts: Morning (6AM-2PM), Afternoon (2PM-10PM), Night (10PM-6AM)</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">8-hour shifts</p>
+                        </div>
+
+                        <div class="template-card" onclick="selectTemplate('business')">
+                            <h4>💼 Business Hours</h4>
+                            <p>Standard office hours: 9AM-6PM, Monday to Friday</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">9-hour shifts</p>
+                        </div>
+
+                        <div class="template-card" onclick="selectTemplate('extended')">
+                            <h4>🕐 Extended Hours</h4>
+                            <p>2 shifts: Morning (8AM-5PM), Evening (5PM-10PM)</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">9 & 5-hour shifts</p>
+                        </div>
+
+                        <div class="template-card" onclick="selectTemplate('weekend')">
+                            <h4>📅 Weekend Coverage</h4>
+                            <p>Optimized for weekend operations with rotating shifts</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">Flexible hours</p>
+                        </div>
+
+                        <div class="template-card" onclick="selectTemplate('retail')">
+                            <h4>🛍️ Retail Schedule</h4>
+                            <p>Mall hours: 10AM-9PM, 7 days a week</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">Split shifts</p>
+                        </div>
+
+                        <div class="template-card" onclick="selectTemplate('custom')">
+                            <h4>⚙️ Custom Template</h4>
+                            <p>Create your own shift pattern from scratch</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: #667eea;">Fully customizable</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <button class="btn-primary" onclick="createCustomTemplate()">
+                            ➕ <span class="lang-en">Create New Template</span>
+                            <span class="lang-th" style="display: none;">สร้างเทมเพลตใหม่</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Leave & Holidays -->
+            <div id="tab-calendar" class="tab-content">
+                <div class="form-section">
+                    <h2 class="section-title">
+                        📅 <span class="lang-en">Leave & Holiday Planning</span>
+                        <span class="lang-th" style="display: none;">วางแผนวันหยุดและลา</span>
+                    </h2>
+                    <p class="section-description">
+                        <span class="lang-en">Mark holidays, staff leaves, and scheduled absences to ensure accurate shift planning.</span>
+                        <span class="lang-th" style="display: none;">ทำเครื่องหมายวันหยุด ลา และการขาดงานที่กำหนดไว้ เพื่อให้การจัดตารางกะแม่นยำ</span>
+                    </p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">📅 Select Month</span>
+                                <span class="lang-th" style="display: none;">📅 เลือกเดือน</span>
+                            </label>
+                            <input type="month" id="calendarMonth" class="input-field" value="2025-11">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <span class="lang-en">🏢 Country/Region</span>
+                                <span class="lang-th" style="display: none;">🏢 ประเทศ/ภูมิภาค</span>
+                            </label>
+                            <select id="holidayRegion">
+                                <option value="TH">Thailand 🇹🇭</option>
+                                <option value="SG">Singapore 🇸🇬</option>
+                                <option value="MY">Malaysia 🇲🇾</option>
+                                <option value="PH">Philippines 🇵🇭</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-secondary" onclick="loadPublicHolidays()">
+                            🎉 <span class="lang-en">Load Public Holidays</span>
+                            <span class="lang-th" style="display: none;">โหลดวันหยุดนักขัตฤกษ์</span>
+                        </button>
+                        <button class="btn-secondary" onclick="document.getElementById('leaveFileUpload').click()">
+                            📄 <span class="lang-en">Upload Leave File</span>
+                            <span class="lang-th" style="display: none;">อัปโหลดไฟล์วันลา</span>
+                        </button>
+                        <input type="file" id="leaveFileUpload" accept=".csv,.xlsx" onchange="handleLeaveUpload(event)" style="display: none;">
+                        <button class="btn-secondary" onclick="addLeaveManually()">
+                            ➕ <span class="lang-en">Add Leave Manually</span>
+                            <span class="lang-th" style="display: none;">เพิ่มวันลาด้วยตนเอง</span>
+                        </button>
+                    </div>
+                    
+                    <div id="leaveUploadStatus" style="margin-top: 10px; padding: 10px; background: #f0fdf4; border-radius: 8px; border-left: 3px solid #48bb78; display: none;">
+                        <span style="color: #22543d; font-size: 14px;"></span>
+                    </div>
+
+                    <!-- Calendar Preview -->
+                    <div style="background: white; padding: 20px; border-radius: 10px;">
+                        <h4 style="margin-bottom: 15px;">
+                            <span class="lang-en">November 2025</span>
+                            <span class="lang-th" style="display: none;">พฤศจิกายน 2568</span>
+                        </h4>
+                        <div class="calendar-grid">
+                            <div class="calendar-header">Mon</div>
+                            <div class="calendar-header">Tue</div>
+                            <div class="calendar-header">Wed</div>
+                            <div class="calendar-header">Thu</div>
+                            <div class="calendar-header">Fri</div>
+                            <div class="calendar-header">Sat</div>
+                            <div class="calendar-header">Sun</div>
+                            <!-- Days will be generated by JS -->
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 20px; font-size: 13px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 20px; height: 20px; background: #fef5e7; border: 1px solid #f39c12; border-radius: 4px;"></div>
+                                <span>Public Holiday</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 20px; height: 20px; background: #fde8ef; border: 1px solid #e91e63; border-radius: 4px;"></div>
+                                <span>Staff Leave</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language Toggle
+        function toggleLanguage() {
+            const isEnglish = document.querySelector('.lang-en').style.display !== 'none';
+            document.querySelectorAll('.lang-en').forEach(el => {
+                el.style.display = isEnglish ? 'none' : 'inline';
+            });
+            document.querySelectorAll('.lang-th').forEach(el => {
+                el.style.display = isEnglish ? 'inline' : 'none';
+            });
+        }
+
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        // Sample staff data
+        const staffDatabase = [
+            { id: 1, name: 'Somchai Prasert', role: 'Senior Agent', availability: 'Full-time', preferences: 'Morning shift' },
+            { id: 2, name: 'Nittaya Komol', role: 'Agent', availability: 'Full-time', preferences: 'Any' },
+            { id: 3, name: 'Wanchai Supap', role: 'Team Lead', availability: 'Full-time', preferences: 'Afternoon' },
+            { id: 4, name: 'Pimchanok Naree', role: 'Agent', availability: 'Part-time', preferences: 'Morning shift' },
+            { id: 5, name: 'Kittisak Mongkol', role: 'Senior Agent', availability: 'Full-time', preferences: 'Night shift' }
+        ];
+
+        // Public Holidays Database (2025)
+        const publicHolidays = {
+            'TH': [ // Thailand
+                { date: '2025-01-01', name: 'New Year\'s Day' },
+                { date: '2025-02-12', name: 'Makha Bucha Day' },
+                { date: '2025-04-06', name: 'Chakri Memorial Day' },
+                { date: '2025-04-13', name: 'Songkran Festival' },
+                { date: '2025-04-14', name: 'Songkran Festival' },
+                { date: '2025-04-15', name: 'Songkran Festival' },
+                { date: '2025-05-01', name: 'National Labour Day' },
+                { date: '2025-05-05', name: 'Coronation Day' },
+                { date: '2025-05-12', name: 'Visakha Bucha Day' },
+                { date: '2025-06-03', name: 'Queen Suthida\'s Birthday' },
+                { date: '2025-07-10', name: 'Asalha Bucha Day' },
+                { date: '2025-07-28', name: 'King Vajiralongkorn\'s Birthday' },
+                { date: '2025-08-12', name: 'Queen Sirikit\'s Birthday' },
+                { date: '2025-10-13', name: 'King Bhumibol Memorial Day' },
+                { date: '2025-10-23', name: 'Chulalongkorn Day' },
+                { date: '2025-12-05', name: 'King Bhumibol\'s Birthday' },
+                { date: '2025-12-10', name: 'Constitution Day' },
+                { date: '2025-12-31', name: 'New Year\'s Eve' }
+            ],
+            'SG': [ // Singapore
+                { date: '2025-01-01', name: 'New Year\'s Day' },
+                { date: '2025-01-29', name: 'Chinese New Year' },
+                { date: '2025-01-30', name: 'Chinese New Year' },
+                { date: '2025-04-18', name: 'Good Friday' },
+                { date: '2025-05-01', name: 'Labour Day' },
+                { date: '2025-05-12', name: 'Vesak Day' },
+                { date: '2025-06-06', name: 'Hari Raya Puasa' },
+                { date: '2025-08-09', name: 'National Day' },
+                { date: '2025-08-13', name: 'Hari Raya Haji' },
+                { date: '2025-10-20', name: 'Deepavali' },
+                { date: '2025-12-25', name: 'Christmas Day' }
+            ],
+            'MY': [ // Malaysia
+                { date: '2025-01-01', name: 'New Year\'s Day' },
+                { date: '2025-01-29', name: 'Chinese New Year' },
+                { date: '2025-01-30', name: 'Chinese New Year' },
+                { date: '2025-02-01', name: 'Federal Territory Day' },
+                { date: '2025-04-18', name: 'Good Friday' },
+                { date: '2025-05-01', name: 'Labour Day' },
+                { date: '2025-05-12', name: 'Vesak Day' },
+                { date: '2025-06-02', name: 'Agong\'s Birthday' },
+                { date: '2025-06-06', name: 'Hari Raya Aidilfitri' },
+                { date: '2025-06-07', name: 'Hari Raya Aidilfitri' },
+                { date: '2025-08-13', name: 'Hari Raya Aidiladha' },
+                { date: '2025-08-31', name: 'National Day' },
+                { date: '2025-09-03', name: 'Awal Muharram' },
+                { date: '2025-09-16', name: 'Malaysia Day' },
+                { date: '2025-10-20', name: 'Deepavali' },
+                { date: '2025-11-12', name: 'Prophet Muhammad\'s Birthday' },
+                { date: '2025-12-25', name: 'Christmas Day' }
+            ],
+            'PH': [ // Philippines
+                { date: '2025-01-01', name: 'New Year\'s Day' },
+                { date: '2025-01-29', name: 'Chinese New Year' },
+                { date: '2025-02-25', name: 'EDSA People Power Revolution' },
+                { date: '2025-04-09', name: 'Day of Valor' },
+                { date: '2025-04-17', name: 'Maundy Thursday' },
+                { date: '2025-04-18', name: 'Good Friday' },
+                { date: '2025-04-19', name: 'Black Saturday' },
+                { date: '2025-05-01', name: 'Labour Day' },
+                { date: '2025-06-12', name: 'Independence Day' },
+                { date: '2025-08-21', name: 'Ninoy Aquino Day' },
+                { date: '2025-08-25', name: 'National Heroes Day' },
+                { date: '2025-11-01', name: 'All Saints\' Day' },
+                { date: '2025-11-30', name: 'Bonifacio Day' },
+                { date: '2025-12-08', name: 'Feast of the Immaculate Conception' },
+                { date: '2025-12-25', name: 'Christmas Day' },
+                { date: '2025-12-30', name: 'Rizal Day' },
+                { date: '2025-12-31', name: 'New Year\'s Eve' }
+            ]
+        };
+
+        // Shift Templates
+        const shiftTemplates = {
+            '24-7': {
+                name: '24/7 Coverage',
+                shifts: [
+                    { name: 'Morning', start: '06:00', end: '14:00', hours: 8 },
+                    { name: 'Afternoon', start: '14:00', end: '22:00', hours: 8 },
+                    { name: 'Night', start: '22:00', end: '06:00', hours: 8 }
+                ]
+            },
+            'business': {
+                name: 'Business Hours',
+                shifts: [
+                    { name: 'Day Shift', start: '09:00', end: '18:00', hours: 9 }
+                ]
+            },
+            'extended': {
+                name: 'Extended Hours',
+                shifts: [
+                    { name: 'Morning', start: '08:00', end: '17:00', hours: 9 },
+                    { name: 'Evening', start: '17:00', end: '22:00', hours: 5 }
+                ]
+            },
+            'weekend': {
+                name: 'Weekend Coverage',
+                shifts: [
+                    { name: 'Morning', start: '08:00', end: '16:00', hours: 8 },
+                    { name: 'Afternoon', start: '14:00', end: '22:00', hours: 8 }
+                ]
+            },
+            'retail': {
+                name: 'Retail Schedule',
+                shifts: [
+                    { name: 'Opening', start: '10:00', end: '15:00', hours: 5 },
+                    { name: 'Mid-day', start: '13:00', end: '18:00', hours: 5 },
+                    { name: 'Closing', start: '16:00', end: '21:00', hours: 5 }
+                ]
+            }
+        };
+
+        // Store uploaded forecast and leave data
+        let uploadedForecast = null;
+        let staffLeaveData = [];
+
+        // Generate Shifts
+        function generateShifts() {
+            const totalStaff = parseInt(document.getElementById('totalStaff').value);
+            const operatingHours = document.getElementById('operatingHours').value;
+            const optimizationGoal = document.getElementById('optimizationGoal').value;
+
+            if (!totalStaff || totalStaff < 1) {
+                alert('Please enter a valid number of staff');
+                return;
+            }
+
+            // Show results
+            document.getElementById('shiftResults').style.display = 'block';
+
+            // Generate sample schedule
+            const scheduleTable = document.querySelector('#scheduleTable tbody');
+            scheduleTable.innerHTML = '';
+
+            const shifts = ['morning', 'afternoon', 'night'];
+            const shiftLabels = {
+                'morning': '6AM-2PM',
+                'afternoon': '2PM-10PM',
+                'night': '10PM-6AM',
+                'off': 'OFF'
+            };
+
+            // Generate for first 10 staff or totalStaff, whichever is smaller
+            const displayStaff = Math.min(totalStaff, 10);
+            
+            for (let i = 0; i < displayStaff; i++) {
+                const row = document.createElement('tr');
+                const staff = staffDatabase[i % staffDatabase.length];
+                
+                let html = `<td><strong>${staff.name}</strong><br><small>${staff.role}</small></td>`;
+                
+                for (let day = 0; day < 7; day++) {
+                    // Random shift assignment for demo
+                    const shiftType = shifts[Math.floor(Math.random() * 4)]; // Includes 'undefined' for OFF days
+                    const shiftClass = shiftType ? `shift-${shiftType}` : '';
+                    const shiftLabel = shiftType ? shiftLabels[shiftType] : 'OFF';
+                    
+                    html += `<td><span class="shift-badge ${shiftClass}">${shiftLabel}</span></td>`;
+                }
+                
+                row.innerHTML = html;
+                scheduleTable.appendChild(row);
+            }
+
+            // Scroll to results
+            document.getElementById('shiftResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearSchedule() {
+            document.getElementById('shiftResults').style.display = 'none';
+            document.getElementById('totalStaff').value = '50';
+        }
+
+        function downloadSchedule() {
+            alert('PDF download feature coming soon! This will generate a professional shift schedule PDF.');
+        }
+
+        function exportExcel() {
+            alert('Excel export feature coming soon! This will export the schedule to Excel format.');
+        }
+
+        function saveSchedule() {
+            alert('Schedule saved successfully! (Feature integration in progress)');
+        }
+
+        // Staff Management
+        function handleStaffUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                alert(`Uploaded: ${file.name}\n\nStaff import feature coming soon! This will parse CSV/Excel and populate staff list.`);
+                displayStaffList();
+            }
+        }
+
+        function addStaffManually() {
+            alert('Manual staff entry form coming soon! You will be able to add staff with:\n- Name\n- Role\n- Availability\n- Shift Preferences\n- Skills');
+            displayStaffList();
+        }
+
+        function displayStaffList() {
+            const container = document.getElementById('staffListContainer');
+            
+            let html = '<table class="staff-table"><thead><tr><th>Name</th><th>Role</th><th>Availability</th><th>Preferences</th><th>Actions</th></tr></thead><tbody>';
+            
+            staffDatabase.forEach(staff => {
+                html += `
+                    <tr>
+                        <td><strong>${staff.name}</strong></td>
+                        <td>${staff.role}</td>
+                        <td>${staff.availability}</td>
+                        <td>${staff.preferences}</td>
+                        <td>
+                            <button class="btn-danger" onclick="removeStaff(${staff.id})">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function removeStaff(id) {
+            alert(`Remove staff ID: ${id}\n\nThis will remove the staff member from the list.`);
+        }
+
+        // Forecast Upload
+        function handleForecastUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedForecast = file;
+                document.getElementById('forecastFileName').textContent = `✓ Uploaded: ${file.name}`;
+                document.getElementById('forecastFileName').style.display = 'block';
+                
+                // Auto-populate fields (simulated)
+                document.getElementById('totalStaff').value = '45';
+                alert(`Forecast file uploaded: ${file.name}\n\nData parsed successfully!\n- Total required staff: 45\n- Period: Next 30 days\n\nClick "Generate Shifts" to create schedule.`);
+            }
+        }
+
+        // Leave Upload
+        function handleLeaveUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const status = document.getElementById('leaveUploadStatus');
+                status.querySelector('span').textContent = `✓ Uploaded: ${file.name} - 8 staff leaves imported`;
+                status.style.display = 'block';
+                
+                // Store in staffLeaveData
+                staffLeaveData = [
+                    { staff: 'Somchai Prasert', date: '2025-11-15', reason: 'Annual Leave' },
+                    { staff: 'Nittaya Komol', date: '2025-11-20', reason: 'Sick Leave' },
+                    { staff: 'Wanchai Supap', date: '2025-11-25', reason: 'Personal Leave' }
+                ];
+                
+                alert(`Leave file uploaded: ${file.name}\n\n✓ Imported 8 staff leave records\n✓ Date range: Nov 1-30, 2025\n\nClick "Load Public Holidays" to see calendar updated.`);
+            }
+        }
+
+        function addLeaveManually() {
+            const staffName = prompt('Enter staff name:');
+            if (!staffName) return;
+            
+            const leaveDate = prompt('Enter leave date (YYYY-MM-DD):');
+            if (!leaveDate) return;
+            
+            const reason = prompt('Leave reason (optional):') || 'Personal Leave';
+            
+            staffLeaveData.push({ staff: staffName, date: leaveDate, reason });
+            alert(`✓ Leave added for ${staffName} on ${leaveDate}\n\nReason: ${reason}\n\nTotal leaves recorded: ${staffLeaveData.length}`);
+        }
+
+        // Templates
+        function selectTemplate(templateId) {
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            if (templateId === 'custom') {
+                createCustomTemplate();
+                return;
+            }
+            
+            const template = shiftTemplates[templateId];
+            if (template) {
+                let shiftInfo = `Selected: ${template.name}\n\nShifts:\n`;
+                template.shifts.forEach(shift => {
+                    shiftInfo += `- ${shift.name}: ${shift.start} - ${shift.end} (${shift.hours}h)\n`;
+                });
+                shiftInfo += '\n✓ This template will be used for shift generation.';
+                alert(shiftInfo);
+            }
+        }
+
+        function createCustomTemplate() {
+            alert('Custom template builder coming soon!\n\nYou will be able to:\n- Define shift times\n- Set rotation patterns\n- Configure break times\n- Save as template');
+        }
+
+        // Calendar
+        function loadPublicHolidays() {
+            const region = document.getElementById('holidayRegion').value;
+            
+            if (region === 'custom') {
+                alert('Custom holidays: You can manually add holidays by clicking on calendar dates.');
+                return;
+            }
+            
+            const holidays = publicHolidays[region];
+            if (holidays) {
+                const regionNames = {
+                    'TH': 'Thailand 🇹🇭',
+                    'SG': 'Singapore 🇸🇬',
+                    'MY': 'Malaysia 🇲🇾',
+                    'PH': 'Philippines 🇵🇭'
+                };
+                
+                let message = `✓ Loaded ${holidays.length} public holidays for ${regionNames[region]}\n\n2025 Holidays:\n`;
+                holidays.slice(0, 10).forEach(h => {
+                    message += `• ${h.date}: ${h.name}\n`;
+                });
+                
+                if (holidays.length > 10) {
+                    message += `\n...and ${holidays.length - 10} more\n`;
+                }
+                
+                message += '\n✓ Holidays will be excluded from shift scheduling\n✓ Calendar updated';
+                alert(message);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current month
+            const now = new Date();
+            const monthInput = document.getElementById('calendarMonth');
+            monthInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        });
+    </script>
+</body>
+</html>

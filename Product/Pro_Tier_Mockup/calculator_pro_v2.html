@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headly Pro V2 - Flexible & Business-Focused | คำนวณจำนวนพนักงาน</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Noto Sans Thai';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 5px;
+            border-radius: 25px;
+        }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            font-size: 28px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .step-subtitle {
+            font-size: 16px;
+            color: #718096;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .input-field, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .duration-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #667eea;
+        }
+
+        .duration-selector label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .month-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .month-input-group {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .month-input-group.hidden {
+            display: none;
+        }
+
+        .month-input-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .impact-type-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .impact-type-selector label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .impact-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .preset-btn {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .preset-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .preset-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .preset-impact {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .preset-description {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .slider-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            margin-top: 10px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .impact-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+        }
+
+        .impact-summary {
+            background: #ebf8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .impact-summary strong {
+            color: #2c5282;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .impact-summary-values {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .volume-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .volume-label {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .volume-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: #667eea;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 60px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: block;
+            margin: 40px auto;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .step-title { font-size: 22px; }
+            .calculate-btn { padding: 15px 40px; font-size: 18px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span>Headly</span>
+                <span class="pro-badge">PRO V2</span>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active">English</button>
+                <button class="lang-btn">ไทย</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="step-header">
+                <h2 class="step-title">Flexible Headcount Forecasting</h2>
+                <p class="step-subtitle">Choose your planning horizon and add business impact factors</p>
+            </div>
+
+            <!-- FLEXIBLE FORECAST DURATION -->
+            <div class="form-section">
+                <div class="section-title">✨ Flexible Forecast Duration (PRO)</div>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px;">
+                    Customize your planning horizon - from quick 1-month forecasts to full 12-month annual planning
+                </p>
+
+                <div class="duration-selector">
+                    <label>📅 How many months do you want to forecast?</label>
+                    <select id="forecastDuration" onchange="updateMonthInputs()">
+                        <option value="1">1 month - Quick forecast</option>
+                        <option value="2">2 months - Short-term planning</option>
+                        <option value="3" selected>3 months - Quarterly planning</option>
+                        <option value="4">4 months</option>
+                        <option value="5">5 months</option>
+                        <option value="6">6 months - Budget planning cycle</option>
+                        <option value="9">9 months</option>
+                        <option value="12">12 months - Full annual planning</option>
+                    </select>
+                    <div class="info-badge">💡 Select the timeframe that matches your business planning cycle</div>
+                </div>
+
+                <div class="month-inputs" id="monthInputsContainer">
+                    <div class="month-input-group" data-month="1">
+                        <label>Month 1 (Jan 2026)</label>
+                        <input type="number" class="input-field" value="20000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group" data-month="2">
+                        <label>Month 2 (Feb 2026)</label>
+                        <input type="number" class="input-field" value="21000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group" data-month="3">
+                        <label>Month 3 (Mar 2026)</label>
+                        <input type="number" class="input-field" value="22000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="4">
+                        <label>Month 4 (Apr 2026)</label>
+                        <input type="number" class="input-field" value="23000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="5">
+                        <label>Month 5 (May 2026)</label>
+                        <input type="number" class="input-field" value="24000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="6">
+                        <label>Month 6 (Jun 2026)</label>
+                        <input type="number" class="input-field" value="25000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="7">
+                        <label>Month 7 (Jul 2026)</label>
+                        <input type="number" class="input-field" value="26000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="8">
+                        <label>Month 8 (Aug 2026)</label>
+                        <input type="number" class="input-field" value="27000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="9">
+                        <label>Month 9 (Sep 2026)</label>
+                        <input type="number" class="input-field" value="28000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="10">
+                        <label>Month 10 (Oct 2026)</label>
+                        <input type="number" class="input-field" value="29000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="11">
+                        <label>Month 11 (Nov 2026)</label>
+                        <input type="number" class="input-field" value="30000" placeholder="Expected volume">
+                    </div>
+                    <div class="month-input-group hidden" data-month="12">
+                        <label>Month 12 (Dec 2026)</label>
+                        <input type="number" class="input-field" value="32000" placeholder="Expected volume">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUSINESS PLAN & CAMPAIGN IMPACT -->
+            <div class="form-section">
+                <div class="section-title">🎯 Business Plan & Campaign Impact (PRO)</div>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px;">
+                    Plan for strategic business changes, not just marketing campaigns - expansion, new products, seasonal shifts, and more
+                </p>
+
+                <div class="impact-type-selector">
+                    <label>📊 What type of business impact are you planning for?</label>
+                    <select id="impactType" onchange="updateImpactPresets()">
+                        <optgroup label="Marketing & Sales">
+                            <option value="marketing">📣 Marketing Campaign</option>
+                            <option value="seasonal-promo">🎁 Seasonal Promotion</option>
+                        </optgroup>
+                        <optgroup label="Business Growth">
+                            <option value="expansion">🚀 Business Expansion</option>
+                            <option value="product">✨ New Product/Service Launch</option>
+                            <option value="market">🌏 New Market/Region Entry</option>
+                            <option value="partnership">🤝 Partnership/Acquisition</option>
+                        </optgroup>
+                        <optgroup label="Operational Changes">
+                            <option value="seasonal-business">🌦️ Seasonal Business Changes</option>
+                            <option value="operational">⚙️ Process/System Changes</option>
+                            <option value="channel">📱 New Channel Launch</option>
+                        </optgroup>
+                        <optgroup label="Custom">
+                            <option value="custom">⚡ Custom Business Impact</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div id="presetsContainer">
+                    <p style="color: #2d3748; font-weight: 600; margin-bottom: 12px;">Quick Presets (Marketing Campaign):</p>
+                    <div class="impact-presets">
+                        <button class="preset-btn" onclick="selectPreset(35, this)">
+                            <div class="preset-icon">🎊</div>
+                            <div class="preset-name">New Year Sale</div>
+                            <div class="preset-impact">+35% volume</div>
+                            <div class="preset-description">High traffic holiday event</div>
+                        </button>
+                        <button class="preset-btn" onclick="selectPreset(40, this)">
+                            <div class="preset-icon">🧧</div>
+                            <div class="preset-name">Chinese New Year</div>
+                            <div class="preset-impact">+40% volume</div>
+                            <div class="preset-description">Major cultural event (APAC)</div>
+                        </button>
+                        <button class="preset-btn" onclick="selectPreset(25, this)">
+                            <div class="preset-icon">💝</div>
+                            <div class="preset-name">Valentine's Day</div>
+                            <div class="preset-impact">+25% volume</div>
+                            <div class="preset-description">Romantic holiday surge</div>
+                        </button>
+                        <button class="preset-btn" onclick="selectPreset(50, this)">
+                            <div class="preset-icon">⚡</div>
+                            <div class="preset-name">Flash Sale</div>
+                            <div class="preset-impact">+50% volume</div>
+                            <div class="preset-description">Limited-time mega sale</div>
+                        </button>
+                        <button class="preset-btn" onclick="selectPreset(60, this)">
+                            <div class="preset-icon">🎄</div>
+                            <div class="preset-name">Black Friday</div>
+                            <div class="preset-impact">+60% volume</div>
+                            <div class="preset-description">Peak shopping event</div>
+                        </button>
+                        <button class="preset-btn" onclick="selectPreset(30, this)">
+                            <div class="preset-icon">🛍️</div>
+                            <div class="preset-name">12.12 Sale</div>
+                            <div class="preset-impact">+30% volume</div>
+                            <div class="preset-description">E-commerce mega day</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="slider-container">
+                    <label style="font-weight: 600; color: #2d3748;">Fine-tune Impact Level:</label>
+                    <div class="impact-value" id="impactValue">+30%</div>
+                    <input type="range" min="-50" max="100" value="30" class="slider" id="impactSlider" oninput="updateImpactValue()">
+                    <p style="margin-top: 12px; font-size: 13px; color: #718096;">
+                        💡 <strong>Tip:</strong> Use negative values for expected volume reductions (e.g., -20% for off-season, -15% for process improvements reducing ticket volume)
+                    </p>
+                </div>
+
+                <div class="impact-summary">
+                    <strong>📈 Projected Impact on Workload:</strong>
+                    <div class="impact-summary-values">
+                        <div class="volume-box">
+                            <div class="volume-label">Current Average</div>
+                            <div class="volume-number">21,000</div>
+                            <small style="color: #718096;">contacts/month</small>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="volume-box" style="border: 2px solid #667eea;">
+                            <div class="volume-label">With Impact</div>
+                            <div class="volume-number" style="color: #667eea;" id="projectedVolume">27,300</div>
+                            <small style="color: #48bb78; font-weight: 600;" id="volumeChange">+6,300 (+30%)</small>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; color: #2c5282; font-size: 14px;">
+                        <strong>Recommendation:</strong> <span id="recommendation">Add 6-7 temporary agents during this period to maintain service levels</span>
+                    </p>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="alert('Full forecast calculation with flexible duration + business impact coming soon! \\n\\nThis will show: \\n✓ Month-by-month breakdown \\n✓ Hiring timeline \\n✓ Cost analysis \\n✓ Scenario planning')">
+                📊 Calculate Full Forecast
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        function updateMonthInputs() {
+            const duration = parseInt(document.getElementById('forecastDuration').value);
+            const monthInputs = document.querySelectorAll('.month-input-group');
+
+            monthInputs.forEach((input, index) => {
+                const monthNum = parseInt(input.getAttribute('data-month'));
+                if (monthNum <= duration) {
+                    input.classList.remove('hidden');
+                } else {
+                    input.classList.add('hidden');
+                }
+            });
+        }
+
+        function updateImpactPresets() {
+            const impactType = document.getElementById('impactType').value;
+            const presetsContainer = document.getElementById('presetsContainer');
+
+            const presets = {
+                marketing: {
+                    title: 'Quick Presets (Marketing Campaign):',
+                    items: [
+                        {icon: '🎊', name: 'New Year Sale', impact: 35, desc: 'High traffic holiday event'},
+                        {icon: '🧧', name: 'Chinese New Year', impact: 40, desc: 'Major cultural event (APAC)'},
+                        {icon: '💝', name: "Valentine's Day", impact: 25, desc: 'Romantic holiday surge'},
+                        {icon: '⚡', name: 'Flash Sale', impact: 50, desc: 'Limited-time mega sale'},
+                        {icon: '🎄', name: 'Black Friday', impact: 60, desc: 'Peak shopping event'},
+                        {icon: '🛍️', name: '12.12 Sale', impact: 30, desc: 'E-commerce mega day'}
+                    ]
+                },
+                expansion: {
+                    title: 'Quick Presets (Business Expansion):',
+                    items: [
+                        {icon: '🏢', name: 'New Office/Location', impact: 45, desc: 'Opening new branch'},
+                        {icon: '🌍', name: 'International Expansion', impact: 60, desc: 'Entering new country'},
+                        {icon: '📈', name: 'Market Share Growth', impact: 35, desc: 'Aggressive acquisition'},
+                        {icon: '🎯', name: 'Territory Expansion', impact: 40, desc: 'New regions added'}
+                    ]
+                },
+                product: {
+                    title: 'Quick Presets (New Product Launch):',
+                    items: [
+                        {icon: '✨', name: 'Major Product Launch', impact: 55, desc: 'Flagship product release'},
+                        {icon: '🚀', name: 'Beta Launch', impact: 30, desc: 'Limited release testing'},
+                        {icon: '📱', name: 'App/Platform Launch', impact: 50, desc: 'New digital product'},
+                        {icon: '🔧', name: 'Feature Update', impact: 20, desc: 'Major feature addition'}
+                    ]
+                },
+                'seasonal-business': {
+                    title: 'Quick Presets (Seasonal Changes):',
+                    items: [
+                        {icon: '☀️', name: 'Peak Season', impact: 45, desc: 'High season volume'},
+                        {icon: '❄️', name: 'Off Season', impact: -30, desc: 'Low season reduction'},
+                        {icon: '🎓', name: 'Back to School', impact: 35, desc: 'Education sector peak'},
+                        {icon: '🎃', name: 'Holiday Season', impact: 50, desc: 'Year-end surge'}
+                    ]
+                },
+                market: {
+                    title: 'Quick Presets (Market Entry):',
+                    items: [
+                        {icon: '🌏', name: 'New Country Launch', impact: 50, desc: 'International expansion'},
+                        {icon: '🏙️', name: 'New City/Region', impact: 35, desc: 'Domestic expansion'},
+                        {icon: '🎯', name: 'New Customer Segment', impact: 40, desc: 'Targeting new demographic'},
+                        {icon: '🏢', name: 'B2B Market Entry', impact: 45, desc: 'Enterprise segment'}
+                    ]
+                }
+            };
+
+            const selectedPreset = presets[impactType] || presets.marketing;
+
+            let html = `<p style="color: #2d3748; font-weight: 600; margin-bottom: 12px;">${selectedPreset.title}</p>`;
+            html += '<div class="impact-presets">';
+
+            selectedPreset.items.forEach(item => {
+                html += `
+                    <button class="preset-btn" onclick="selectPreset(${item.impact}, this)">
+                        <div class="preset-icon">${item.icon}</div>
+                        <div class="preset-name">${item.name}</div>
+                        <div class="preset-impact">${item.impact > 0 ? '+' : ''}${item.impact}% volume</div>
+                        <div class="preset-description">${item.desc}</div>
+                    </button>
+                `;
+            });
+
+            html += '</div>';
+            presetsContainer.innerHTML = html;
+        }
+
+        function selectPreset(value, button) {
+            // Remove selected class from all buttons
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('selected'));
+            // Add selected class to clicked button
+            if (button) button.classList.add('selected');
+
+            // Update slider
+            document.getElementById('impactSlider').value = value;
+            updateImpactValue();
+        }
+
+        function updateImpactValue() {
+            const value = parseInt(document.getElementById('impactSlider').value);
+            const baseVolume = 21000;
+            const newVolume = Math.round(baseVolume * (1 + value / 100));
+            const change = newVolume - baseVolume;
+
+            document.getElementById('impactValue').textContent = (value > 0 ? '+' : '') + value + '%';
+            document.getElementById('impactValue').style.color = value >= 0 ? '#667eea' : '#f56565';
+
+            document.getElementById('projectedVolume').textContent = newVolume.toLocaleString();
+            document.getElementById('volumeChange').textContent = (change > 0 ? '+' : '') + change.toLocaleString() + ' (' + (value > 0 ? '+' : '') + value + '%)';
+            document.getElementById('volumeChange').style.color = change >= 0 ? '#48bb78' : '#f56565';
+
+            // Update recommendation
+            let recommendation = '';
+            if (value > 40) {
+                const agents = Math.ceil(Math.abs(change) / 1000);
+                recommendation = `Add ${agents}-${agents + 2} temporary agents during this high-impact period`;
+            } else if (value > 20) {
+                const agents = Math.ceil(Math.abs(change) / 1200);
+                recommendation = `Consider ${agents}-${agents + 1} additional agents or overtime to handle increased volume`;
+            } else if (value > 0) {
+                recommendation = `Monitor closely - may need 1-2 additional agents depending on AHT`;
+            } else if (value < -20) {
+                const agents = Math.ceil(Math.abs(change) / 1000);
+                recommendation = `Opportunity to reduce ${agents} agents or reassign to other projects during low period`;
+            } else if (value < 0) {
+                recommendation = `Slight volume reduction - good time for training or cross-skilling`;
+            } else {
+                recommendation = `No staffing changes needed - maintain current team size`;
+            }
+
+            document.getElementById('recommendation').textContent = recommendation;
+        }
+
+        // Initialize
+        updateMonthInputs();
+        updateImpactValue();
+    </script>
+</body>
+</html>

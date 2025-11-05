@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headly Pro - Advanced Headcount Calculator | คำนวณจำนวนพนักงาน</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Noto Sans Thai';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 5px;
+            border-radius: 25px;
+        }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-subtitle {
+            font-size: 16px;
+            color: #718096;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .radio-item {
+            position: relative;
+        }
+
+        .radio-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .radio-item input[type="radio"]:checked + .radio-label {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-color: #667eea;
+        }
+
+        .month-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .month-input-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .month-input-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .campaign-section {
+            margin-top: 20px;
+        }
+
+        .campaign-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .campaign-month {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 16px;
+        }
+
+        .add-campaign-btn {
+            background: transparent;
+            border: 2px dashed #667eea;
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .add-campaign-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .campaign-preset {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preset-btn {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .preset-btn.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .preset-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .preset-impact {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .impact-slider {
+            margin-top: 15px;
+        }
+
+        .impact-slider label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        .impact-value {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .adjusted-volume {
+            margin-top: 10px;
+            padding: 10px;
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            border-radius: 5px;
+        }
+
+        .adjusted-volume strong {
+            color: #2c5282;
+        }
+
+        .scenario-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .scenario-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .scenario-card.best {
+            border-color: #48bb78;
+        }
+
+        .scenario-card.expected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .scenario-card.worst {
+            border-color: #f56565;
+        }
+
+        .scenario-label {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .scenario-card.best .scenario-label {
+            color: #22543d;
+        }
+
+        .scenario-card.expected .scenario-label {
+            color: #667eea;
+        }
+
+        .scenario-card.worst .scenario-label {
+            color: #742a2a;
+        }
+
+        .scenario-volume {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .scenario-agents {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .scenario-card.best .scenario-agents {
+            color: #48bb78;
+        }
+
+        .scenario-card.expected .scenario-agents {
+            color: #667eea;
+        }
+
+        .scenario-card.worst .scenario-agents {
+            color: #f56565;
+        }
+
+        .scenario-text {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .smart-recommendation {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .smart-recommendation h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .smart-recommendation p {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .recommendation-details {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .recommendation-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .recommendation-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            color: #2c5282;
+            line-height: 1.6;
+        }
+
+        .comparison-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .step-title {
+                font-size: 24px;
+            }
+
+            .month-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario-section {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-preset {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span>Headly</span>
+                <span class="pro-badge">PRO</span>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="switchLanguage('th')">ไทย</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="step-header">
+                <h2 class="step-title lang-en">
+                    Advanced Headcount Forecasting
+                    <span class="comparison-badge">vs Free: +3 features</span>
+                </h2>
+                <h2 class="step-title lang-th" style="display: none;">
+                    การคำนวณจำนวนพนักงานแบบขั้นสูง
+                    <span class="comparison-badge">มากกว่าแผนฟรี 3 ฟีเจอร์</span>
+                </h2>
+                <p class="step-subtitle lang-en">Industry benchmarks, campaign planning, and scenario analysis included</p>
+                <p class="step-subtitle lang-th" style="display: none;">รวมมาตรฐานอุตสาหกรรม การวางแผนแคมเปญ และการวิเคราะห์สถานการณ์</p>
+            </div>
+
+            <!-- Industry & Channel (Same as Free) -->
+            <div class="info-box">
+                <p class="lang-en"><strong>Selected:</strong> Fintech / Cryptocurrency • LINE • 24/7 Operations</p>
+                <p class="lang-th" style="display: none;"><strong>เลือกแล้ว:</strong> ฟินเทค / Cryptocurrency • LINE • ทำงาน 24/7</p>
+            </div>
+
+            <!-- PRO FEATURE 1: Auto-Fill Options -->
+            <div class="form-section">
+                <div class="section-title lang-en">✨ Volume Input Method (PRO Feature)</div>
+                <div class="section-title lang-th" style="display: none;">✨ วิธีการใส่ปริมาณงาน (ฟีเจอร์ PRO)</div>
+
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="manual" name="input_method" value="manual" checked onchange="updateInputMethod()">
+                        <label for="manual" class="radio-label">
+                            <div>
+                                <div><strong class="lang-en">Manual Entry</strong><strong class="lang-th" style="display: none;">ใส่ด้วยตนเอง</strong></div>
+                                <small style="color: #718096;" class="lang-en">Enter your own forecasted volumes</small>
+                                <small style="color: #718096;" class="lang-th" style="display: none;">ใส่ปริมาณที่คาดการณ์เอง</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="benchmark" name="input_method" value="benchmark" onchange="updateInputMethod()">
+                        <label for="benchmark" class="radio-label">
+                            <div>
+                                <div><strong class="lang-en">✨ Industry Benchmark (PRO)</strong><strong class="lang-th" style="display: none;">✨ มาตรฐานอุตสาหกรรม (PRO)</strong></div>
+                                <small style="color: #718096;" class="lang-en">Auto-fill based on Fintech industry average (~19,000/month)</small>
+                                <small style="color: #718096;" class="lang-th" style="display: none;">เติมอัตโนมัติตามค่าเฉลี่ยของอุตสาหกรรมฟินเทค (~19,000/เดือน)</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="trend" name="input_method" value="trend" onchange="updateInputMethod()">
+                        <label for="trend" class="radio-label">
+                            <div>
+                                <div><strong class="lang-en">✨ Historical Trend (PRO)</strong><strong class="lang-th" style="display: none;">✨ แนวโน้มย้อนหลัง (PRO)</strong></div>
+                                <small style="color: #718096;" class="lang-en">Project based on your growth (+5% per month)</small>
+                                <small style="color: #718096;" class="lang-th" style="display: none;">คาดการณ์จากการเติบโตของคุณ (+5% ต่อเดือน)</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="month-inputs" id="volumeInputs">
+                    <div class="month-input-group">
+                        <label class="lang-en">Month 1 Volume (Dec 2025)</label>
+                        <label class="lang-th" style="display: none;">ปริมาณเดือนที่ 1 (ธ.ค. 2568)</label>
+                        <input type="number" class="input-field" id="volume1" value="20000" onchange="calculateAdjusted()">
+                    </div>
+                    <div class="month-input-group">
+                        <label class="lang-en">Month 2 Volume (Jan 2026)</label>
+                        <label class="lang-th" style="display: none;">ปริมาณเดือนที่ 2 (ม.ค. 2569)</label>
+                        <input type="number" class="input-field" id="volume2" value="18000" onchange="calculateAdjusted()">
+                    </div>
+                    <div class="month-input-group">
+                        <label class="lang-en">Month 3 Volume (Feb 2026)</label>
+                        <label class="lang-th" style="display: none;">ปริมาณเดือนที่ 3 (ก.พ. 2569)</label>
+                        <input type="number" class="input-field" id="volume3" value="19000" onchange="calculateAdjusted()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO FEATURE 2: Campaign Impact Calculator -->
+            <div class="form-section">
+                <div class="section-title lang-en">📣 Campaign Impact Calculator (PRO Feature)</div>
+                <div class="section-title lang-th" style="display: none;">📣 เครื่องคำนวณผลกระทบจากแคมเปญ (ฟีเจอร์ PRO)</div>
+
+                <div class="campaign-section">
+                    <!-- Month 1 Campaign -->
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div class="campaign-month lang-en">December 2025 - Month 1</div>
+                            <div class="campaign-month lang-th" style="display: none;">ธันวาคม 2568 - เดือนที่ 1</div>
+                            <button class="add-campaign-btn" onclick="toggleCampaign(1)">
+                                <span class="lang-en" id="campaign1Btn">+ Add Campaign</span>
+                                <span class="lang-th" style="display: none;" id="campaign1BtnTh">+ เพิ่มแคมเปญ</span>
+                            </button>
+                        </div>
+                        <div id="campaign1" style="display: none;">
+                            <div class="campaign-preset">
+                                <button class="preset-btn" onclick="selectPreset(1, 'holiday', 30)">
+                                    <div class="preset-name">🎄 Holiday Promo</div>
+                                    <div class="preset-impact">+30% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(1, 'year-end', 50)">
+                                    <div class="preset-name">🎊 Year-End Sale</div>
+                                    <div class="preset-impact">+50% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(1, 'product', 40)">
+                                    <div class="preset-name">🚀 Product Launch</div>
+                                    <div class="preset-impact">+40% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(1, 'custom', 0)">
+                                    <div class="preset-name">⚙️ Custom</div>
+                                    <div class="preset-impact">Set your own %</div>
+                                </button>
+                            </div>
+                            <div class="impact-slider">
+                                <label class="lang-en">Impact Level: <span id="impact1Value">+30%</span></label>
+                                <label class="lang-th" style="display: none;">ระดับผลกระทบ: <span id="impact1ValueTh">+30%</span></label>
+                                <input type="range" min="0" max="100" value="30" class="slider" id="impact1" oninput="updateImpact(1)">
+                            </div>
+                            <div class="adjusted-volume">
+                                <strong class="lang-en">Adjusted Volume:</strong>
+                                <strong class="lang-th" style="display: none;">ปริมาณที่ปรับแล้ว:</strong>
+                                <span id="adjusted1">20,000 → 26,000 (+6,000)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Month 2 Campaign -->
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div class="campaign-month lang-en">January 2026 - Month 2</div>
+                            <div class="campaign-month lang-th" style="display: none;">มกราคม 2569 - เดือนที่ 2</div>
+                            <button class="add-campaign-btn" onclick="toggleCampaign(2)">
+                                <span class="lang-en" id="campaign2Btn">+ Add Campaign</span>
+                                <span class="lang-th" style="display: none;" id="campaign2BtnTh">+ เพิ่มแคมเปญ</span>
+                            </button>
+                        </div>
+                        <div id="campaign2" style="display: none;">
+                            <div class="campaign-preset">
+                                <button class="preset-btn" onclick="selectPreset(2, 'newyear', 20)">
+                                    <div class="preset-name">🎁 New Year Sale</div>
+                                    <div class="preset-impact">+20% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(2, 'cny', 35)">
+                                    <div class="preset-name">🧧 Chinese New Year</div>
+                                    <div class="preset-impact">+35% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(2, 'product', 40)">
+                                    <div class="preset-name">🚀 Product Launch</div>
+                                    <div class="preset-impact">+40% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(2, 'custom', 0)">
+                                    <div class="preset-name">⚙️ Custom</div>
+                                    <div class="preset-impact">Set your own %</div>
+                                </button>
+                            </div>
+                            <div class="impact-slider">
+                                <label class="lang-en">Impact Level: <span id="impact2Value">+20%</span></label>
+                                <label class="lang-th" style="display: none;">ระดับผลกระทบ: <span id="impact2ValueTh">+20%</span></label>
+                                <input type="range" min="0" max="100" value="20" class="slider" id="impact2" oninput="updateImpact(2)">
+                            </div>
+                            <div class="adjusted-volume">
+                                <strong class="lang-en">Adjusted Volume:</strong>
+                                <strong class="lang-th" style="display: none;">ปริมาณที่ปรับแล้ว:</strong>
+                                <span id="adjusted2">18,000 → 21,600 (+3,600)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Month 3 Campaign -->
+                    <div class="campaign-item">
+                        <div class="campaign-header">
+                            <div class="campaign-month lang-en">February 2026 - Month 3</div>
+                            <div class="campaign-month lang-th" style="display: none;">กุมภาพันธ์ 2569 - เดือนที่ 3</div>
+                            <button class="add-campaign-btn" onclick="toggleCampaign(3)">
+                                <span class="lang-en" id="campaign3Btn">+ Add Campaign</span>
+                                <span class="lang-th" style="display: none;" id="campaign3BtnTh">+ เพิ่มแคมเปญ</span>
+                            </button>
+                        </div>
+                        <div id="campaign3" style="display: none;">
+                            <div class="campaign-preset">
+                                <button class="preset-btn" onclick="selectPreset(3, 'valentine', 25)">
+                                    <div class="preset-name">💝 Valentine's Day</div>
+                                    <div class="preset-impact">+25% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(3, 'product', 40)">
+                                    <div class="preset-name">🚀 Product Launch</div>
+                                    <div class="preset-impact">+40% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(3, 'flash', 60)">
+                                    <div class="preset-name">⚡ Flash Sale</div>
+                                    <div class="preset-impact">+60% volume</div>
+                                </button>
+                                <button class="preset-btn" onclick="selectPreset(3, 'custom', 0)">
+                                    <div class="preset-name">⚙️ Custom</div>
+                                    <div class="preset-impact">Set your own %</div>
+                                </button>
+                            </div>
+                            <div class="impact-slider">
+                                <label class="lang-en">Impact Level: <span id="impact3Value">+25%</span></label>
+                                <label class="lang-th" style="display: none;">ระดับผลกระทบ: <span id="impact3ValueTh">+25%</span></label>
+                                <input type="range" min="0" max="100" value="25" class="slider" id="impact3" oninput="updateImpact(3)">
+                            </div>
+                            <div class="adjusted-volume">
+                                <strong class="lang-en">Adjusted Volume:</strong>
+                                <strong class="lang-th" style="display: none;">ปริมาณที่ปรับแล้ว:</strong>
+                                <span id="adjusted3">19,000 → 23,750 (+4,750)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO FEATURE 3: Scenario Planning -->
+            <div class="form-section">
+                <div class="section-title lang-en">📊 Scenario Planning (PRO Feature)</div>
+                <div class="section-title lang-th" style="display: none;">📊 การวางแผนสถานการณ์ (ฟีเจอร์ PRO)</div>
+
+                <p class="lang-en" style="color: #718096; margin-bottom: 20px;">See best case, expected case, and worst case scenarios to prepare for any situation</p>
+                <p class="lang-th" style="display: none; color: #718096; margin-bottom: 20px;">ดูสถานการณ์ที่ดีที่สุด คาดการณ์ และแย่ที่สุด เพื่อเตรียมพร้อมทุกสถานการณ์</p>
+
+                <div class="scenario-section">
+                    <div class="scenario-card best">
+                        <div class="scenario-label lang-en">🎯 Best Case (+20%)</div>
+                        <div class="scenario-label lang-th" style="display: none;">🎯 สถานการณ์ดีที่สุด (+20%)</div>
+                        <div class="scenario-volume">27,080 avg</div>
+                        <div class="scenario-agents">26</div>
+                        <div class="scenario-text lang-en">agents needed</div>
+                        <div class="scenario-text lang-th" style="display: none;">พนักงานที่ต้องการ</div>
+                    </div>
+
+                    <div class="scenario-card expected">
+                        <div class="scenario-label lang-en">⭐ Expected Case</div>
+                        <div class="scenario-label lang-th" style="display: none;">⭐ สถานการณ์ที่คาดการณ์</div>
+                        <div class="scenario-volume">22,567 avg</div>
+                        <div class="scenario-agents">22</div>
+                        <div class="scenario-text lang-en">agents needed</div>
+                        <div class="scenario-text lang-th" style="display: none;">พนักงานที่ต้องการ</div>
+                    </div>
+
+                    <div class="scenario-card worst">
+                        <div class="scenario-label lang-en">⚠️ Worst Case (-20%)</div>
+                        <div class="scenario-label lang-th" style="display: none;">⚠️ สถานการณ์แย่ที่สุด (-20%)</div>
+                        <div class="scenario-volume">18,053 avg</div>
+                        <div class="scenario-agents">18</div>
+                        <div class="scenario-text lang-en">agents needed</div>
+                        <div class="scenario-text lang-th" style="display: none;">พนักงานที่ต้องการ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendation -->
+            <div class="smart-recommendation">
+                <h3 class="lang-en">💡 Smart Hiring Recommendation</h3>
+                <h3 class="lang-th" style="display: none;">💡 คำแนะนำการจ้างงานอัจฉริยะ</h3>
+                <p class="lang-en">Based on your scenarios and campaign planning, here's our recommendation for optimal workforce flexibility:</p>
+                <p class="lang-th" style="display: none;">จากสถานการณ์และการวางแผนแคมเปญของคุณ นี่คือคำแนะนำของเราสำหรับความยืดหยุ่นของกำลังคนที่เหมาะสม:</p>
+
+                <div class="recommendation-details">
+                    <div class="recommendation-item">
+                        <strong class="lang-en">Full-Time Staff</strong>
+                        <strong class="lang-th" style="display: none;">พนักงานประจำ</strong>
+                        <div>18 agents</div>
+                        <small class="lang-en">(Covers worst case)</small>
+                        <small class="lang-th" style="display: none;">(ครอบคลุมสถานการณ์แย่ที่สุด)</small>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong class="lang-en">Part-Time / Flex</strong>
+                        <strong class="lang-th" style="display: none;">พนักงานชั่วคราว</strong>
+                        <div>4-8 agents</div>
+                        <small class="lang-en">(For campaigns)</small>
+                        <small class="lang-th" style="display: none;">(สำหรับแคมเปญ)</small>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong class="lang-en">Total Flexibility</strong>
+                        <strong class="lang-th" style="display: none;">ยืดหยุ่นทั้งหมด</strong>
+                        <div>18-26 agents</div>
+                        <small class="lang-en">(Scalable range)</small>
+                        <small class="lang-th" style="display: none;">(ช่วงที่ขยายได้)</small>
+                    </div>
+                </div>
+
+                <p style="margin-top: 20px;" class="lang-en">💰 <strong>Cost Optimization:</strong> This approach saves ~30% vs hiring 26 full-time staff, while maintaining coverage for peak campaign periods.</p>
+                <p style="margin-top: 20px; display: none;" class="lang-th">💰 <strong>ประหยัดต้นทุน:</strong> วิธีนี้ประหยัด ~30% เมื่อเทียบกับการจ้างพนักงานประจำ 26 คน พร้อมรักษาความครอบคลุมในช่วง Peak</p>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="window.location.reload()">
+                    <span class="lang-en">← Reset</span>
+                    <span class="lang-th" style="display: none;">← รีเซ็ต</span>
+                </button>
+                <button class="btn btn-primary" onclick="alert('Export to PDF and detailed reports coming soon!')">
+                    <span class="lang-en">Export Full Report (PDF) →</span>
+                    <span class="lang-th" style="display: none;">ส่งออกรายงานฉบับเต็ม (PDF) →</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        let campaigns = [false, false, false];
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (lang === 'en') {
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = '');
+                document.querySelectorAll('.lang-th').forEach(el => el.style.display = 'none');
+            } else {
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.lang-th').forEach(el => el.style.display = '');
+            }
+        }
+
+        function updateInputMethod() {
+            const method = document.querySelector('input[name="input_method"]:checked').value;
+
+            if (method === 'benchmark') {
+                document.getElementById('volume1').value = 19000;
+                document.getElementById('volume2').value = 19000;
+                document.getElementById('volume3').value = 19000;
+            } else if (method === 'trend') {
+                document.getElementById('volume1').value = 20000;
+                document.getElementById('volume2').value = 21000;
+                document.getElementById('volume3').value = 22050;
+            }
+            calculateAdjusted();
+        }
+
+        function toggleCampaign(month) {
+            campaigns[month - 1] = !campaigns[month - 1];
+            const campaignDiv = document.getElementById(`campaign${month}`);
+            const btn = document.getElementById(`campaign${month}Btn`);
+            const btnTh = document.getElementById(`campaign${month}BtnTh`);
+
+            if (campaigns[month - 1]) {
+                campaignDiv.style.display = 'block';
+                btn.textContent = '✓ Campaign Added';
+                btnTh.textContent = '✓ เพิ่มแคมเปญแล้ว';
+            } else {
+                campaignDiv.style.display = 'none';
+                btn.textContent = '+ Add Campaign';
+                btnTh.textContent = '+ เพิ่มแคมเปญ';
+            }
+            calculateAdjusted();
+        }
+
+        function selectPreset(month, type, impact) {
+            document.getElementById(`impact${month}`).value = impact;
+            updateImpact(month);
+        }
+
+        function updateImpact(month) {
+            const impact = document.getElementById(`impact${month}`).value;
+            document.getElementById(`impact${month}Value`).textContent = `+${impact}%`;
+            document.getElementById(`impact${month}ValueTh`).textContent = `+${impact}%`;
+            calculateAdjusted();
+        }
+
+        function calculateAdjusted() {
+            for (let i = 1; i <= 3; i++) {
+                if (campaigns[i - 1]) {
+                    const base = parseInt(document.getElementById(`volume${i}`).value) || 0;
+                    const impact = parseInt(document.getElementById(`impact${i}`).value) || 0;
+                    const adjusted = Math.round(base * (1 + impact / 100));
+                    const diff = adjusted - base;
+                    document.getElementById(`adjusted${i}`).textContent =
+                        `${base.toLocaleString()} → ${adjusted.toLocaleString()} (+${diff.toLocaleString()})`;
+                }
+            }
+        }
+
+        // Initial calculation
+        calculateAdjusted();
+    </script>
+</body>
+</html>

@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headly Pro - Option B (Sticky Button) | คำนวณจำนวนพนักงาน</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Noto Sans Thai';
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px; /* Space for sticky button */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 5px;
+            border-radius: 25px;
+        }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            margin-bottom: 30px;
+        }
+
+        .step-title {
+            font-size: 28px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .step-subtitle {
+            font-size: 16px;
+            color: #718096;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .channel-checkbox {
+            position: relative;
+        }
+
+        .channel-checkbox input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .channel-label {
+            display: block;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .channel-checkbox input:checked + .channel-label {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-color: #667eea;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .kpi-input-group {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .kpi-input-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .kpi-input-group small {
+            display: block;
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .month-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .month-input-group {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .month-input-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .campaign-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .add-campaign-btn {
+            background: transparent;
+            border: 2px dashed #667eea;
+            color: #667eea;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .add-campaign-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .campaign-preset {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preset-btn {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            margin-top: 10px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        /* STICKY BUTTON (Option B) */
+        .sticky-calculate-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .sticky-calculate-wrapper.show {
+            transform: translateY(0);
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .monthly-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .month-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .month-card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .month-card .volume {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 5px 0;
+        }
+
+        .month-card .agents {
+            font-size: 18px;
+            color: #718096;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .scenario-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .scenario-card.best { border-color: #48bb78; }
+        .scenario-card.expected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+        .scenario-card.worst { border-color: #f56565; }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 4px;
+            margin-top: 15px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .heatmap-cell.low { background: #48bb78; }
+        .heatmap-cell.medium { background: #f6ad55; }
+        .heatmap-cell.high { background: #f56565; }
+
+        .smart-recommendation {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .step-title { font-size: 22px; }
+            .sticky-calculate-wrapper { flex-direction: column; gap: 10px; padding: 12px; }
+            .progress-indicator { display: none; }
+            .calculate-btn { padding: 12px 30px; font-size: 16px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span>Headly</span>
+                <span class="pro-badge">PRO - Option B</span>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="switchLanguage('th')">ไทย</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="step-header">
+                <h2 class="step-title lang-en">Advanced Headcount Forecasting (12 Months)</h2>
+                <h2 class="step-title lang-th" style="display: none;">การคำนวณจำนวนพนักงานแบบขั้นสูง (12 เดือน)</h2>
+                <p class="step-subtitle lang-en">Complete workforce planning with all Pro features</p>
+                <p class="step-subtitle lang-th" style="display: none;">วางแผนกำลังคนอย่างสมบูรณ์ด้วยฟีเจอร์ Pro ทั้งหมด</p>
+            </div>
+
+            <!-- PRO FEATURE: Multi-Channel Selection -->
+            <div class="form-section" data-section="channels">
+                <div class="section-title lang-en">✨ Multi-Channel Blended Calculations (PRO)</div>
+                <div class="section-title lang-th" style="display: none;">✨ การคำนวณแบบหลายช่องทาง (PRO)</div>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px;" class="lang-en">Select all channels your team supports</p>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px; display: none;" class="lang-th">เลือกช่องทางทั้งหมดที่ทีมของคุณรองรับ</p>
+
+                <div class="channel-grid">
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="chat" checked onchange="updateProgress()">
+                        <label for="chat" class="channel-label">💬 Chat</label>
+                    </div>
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="phone" checked onchange="updateProgress()">
+                        <label for="phone" class="channel-label">📞 Phone</label>
+                    </div>
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="line" checked onchange="updateProgress()">
+                        <label for="line" class="channel-label">💚 LINE</label>
+                    </div>
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="telegram" checked onchange="updateProgress()">
+                        <label for="telegram" class="channel-label">✈️ Telegram</label>
+                    </div>
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="email" onchange="updateProgress()">
+                        <label for="email" class="channel-label">📧 Email</label>
+                    </div>
+                    <div class="channel-checkbox">
+                        <input type="checkbox" id="facebook" onchange="updateProgress()">
+                        <label for="facebook" class="channel-label">👍 Facebook</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO FEATURE: Custom KPI Targets -->
+            <div class="form-section" data-section="kpis">
+                <div class="section-title lang-en">✨ Custom KPI Targets (PRO)</div>
+                <div class="section-title lang-th" style="display: none;">✨ เป้าหมาย KPI ที่กำหนดเอง (PRO)</div>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px;" class="lang-en">Customize your performance targets</p>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px; display: none;" class="lang-th">ปรับแต่งเป้าหมายประสิทธิภาพของคุณ</p>
+
+                <div class="kpi-grid">
+                    <div class="kpi-input-group">
+                        <label class="lang-en">CPD (Chats Per Day)</label>
+                        <label class="lang-th" style="display: none;">CPD (แชทต่อวัน)</label>
+                        <small class="lang-en">Industry avg: 30</small>
+                        <small class="lang-th" style="display: none;">ค่าเฉลี่ย: 30</small>
+                        <input type="number" class="input-field" value="30" id="cpd" onchange="updateProgress()">
+                    </div>
+                    <div class="kpi-input-group">
+                        <label class="lang-en">AHT (Average Handle Time)</label>
+                        <label class="lang-th" style="display: none;">AHT (เวลาเฉลี่ย)</label>
+                        <small class="lang-en">In minutes</small>
+                        <small class="lang-th" style="display: none;">เป็นนาที</small>
+                        <input type="number" class="input-field" value="12" id="aht" onchange="updateProgress()">
+                    </div>
+                    <div class="kpi-input-group">
+                        <label class="lang-en">Occupancy %</label>
+                        <label class="lang-th" style="display: none;">Occupancy %</label>
+                        <small class="lang-en">Target: 80-90%</small>
+                        <small class="lang-th" style="display: none;">เป้า: 80-90%</small>
+                        <input type="number" class="input-field" value="85" id="occupancy" onchange="updateProgress()">
+                    </div>
+                    <div class="kpi-input-group">
+                        <label class="lang-en">Shrinkage %</label>
+                        <label class="lang-th" style="display: none;">Shrinkage %</label>
+                        <small class="lang-en">Breaks, training, etc.</small>
+                        <small class="lang-th" style="display: none;">พัก, อบรม, ฯลฯ</small>
+                        <input type="number" class="input-field" value="19" id="shrinkage" onchange="updateProgress()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO FEATURE: 12-Month Forecasting -->
+            <div class="form-section" data-section="volumes">
+                <div class="section-title lang-en">✨ 12-Month Forecasting (PRO)</div>
+                <div class="section-title lang-th" style="display: none;">✨ การคาดการณ์ 12 เดือน (PRO)</div>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px;" class="lang-en">Enter projected volumes for the next year</p>
+                <p style="color: #718096; margin-bottom: 15px; font-size: 14px; display: none;" class="lang-th">ใส่ปริมาณที่คาดการณ์สำหรับปีหน้า</p>
+
+                <div class="month-inputs">
+                    <div class="month-input-group">
+                        <label>Jan 2026</label>
+                        <input type="number" class="input-field" value="20000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Feb 2026</label>
+                        <input type="number" class="input-field" value="21000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Mar 2026</label>
+                        <input type="number" class="input-field" value="22000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Apr 2026</label>
+                        <input type="number" class="input-field" value="23000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>May 2026</label>
+                        <input type="number" class="input-field" value="24000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Jun 2026</label>
+                        <input type="number" class="input-field" value="25000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Jul 2026</label>
+                        <input type="number" class="input-field" value="26000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Aug 2026</label>
+                        <input type="number" class="input-field" value="27000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Sep 2026</label>
+                        <input type="number" class="input-field" value="28000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Oct 2026</label>
+                        <input type="number" class="input-field" value="29000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Nov 2026</label>
+                        <input type="number" class="input-field" value="30000" onchange="updateProgress()">
+                    </div>
+                    <div class="month-input-group">
+                        <label>Dec 2026</label>
+                        <input type="number" class="input-field" value="32000" onchange="updateProgress()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO FEATURE: Campaign Impact -->
+            <div class="form-section" data-section="campaigns">
+                <div class="section-title lang-en">📣 Campaign Impact Calculator (PRO)</div>
+                <div class="section-title lang-th" style="display: none;">📣 เครื่องคำนวณผลกระทบจากแคมเปญ (PRO)</div>
+
+                <div class="campaign-item">
+                    <div class="campaign-header">
+                        <div style="font-weight: 600;" class="lang-en">Q1 Campaign (Jan-Mar)</div>
+                        <div style="font-weight: 600; display: none;" class="lang-th">แคมเปญ Q1 (ม.ค.-มี.ค.)</div>
+                        <button class="add-campaign-btn" onclick="toggleQ1Campaign()">
+                            <span class="lang-en" id="q1Btn">+ Add Campaign</span>
+                            <span class="lang-th" style="display: none;">+ เพิ่มแคมเปญ</span>
+                        </button>
+                    </div>
+                    <div id="q1Campaign" style="display: none;">
+                        <div class="campaign-preset">
+                            <button class="preset-btn">
+                                <div class="preset-name">🎊 New Year</div>
+                                <div class="preset-impact">+35% volume</div>
+                            </button>
+                            <button class="preset-btn">
+                                <div class="preset-name">🧧 Chinese NY</div>
+                                <div class="preset-impact">+40% volume</div>
+                            </button>
+                            <button class="preset-btn">
+                                <div class="preset-name">💝 Valentine</div>
+                                <div class="preset-impact">+25% volume</div>
+                            </button>
+                        </div>
+                        <input type="range" min="0" max="100" value="30" class="slider" onchange="updateProgress()">
+                        <p style="margin-top: 10px; color: #667eea; font-weight: 600;">Impact: +30% for Q1</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULTS SECTION (Hidden until Calculate is clicked) -->
+            <div class="results-section" id="resultsSection">
+                <h2 style="font-size: 28px; color: #2d3748; margin-bottom: 30px;" class="lang-en">📈 Your Complete Forecast</h2>
+                <h2 style="font-size: 28px; color: #2d3748; margin-bottom: 30px; display: none;" class="lang-th">📈 แผนการคาดการณ์ของคุณ</h2>
+
+                <!-- Monthly Breakdown -->
+                <div class="result-card">
+                    <div class="result-title lang-en">📅 12-Month Agent Requirements</div>
+                    <div class="result-title lang-th" style="display: none;">📅 จำนวนพนักงานที่ต้องการ 12 เดือน</div>
+                    <div class="monthly-breakdown">
+                        <div class="month-card">
+                            <h4>Jan 2026</h4>
+                            <div class="volume">20,000</div>
+                            <div class="agents">22 agents</div>
+                        </div>
+                        <div class="month-card">
+                            <h4>Feb 2026</h4>
+                            <div class="volume">21,000</div>
+                            <div class="agents">23 agents</div>
+                        </div>
+                        <div class="month-card">
+                            <h4>Mar 2026</h4>
+                            <div class="volume">22,000</div>
+                            <div class="agents">24 agents</div>
+                        </div>
+                        <div class="month-card">
+                            <h4>Q2 Avg</h4>
+                            <div class="volume">24,000</div>
+                            <div class="agents">26 agents</div>
+                        </div>
+                        <div class="month-card">
+                            <h4>Q3 Avg</h4>
+                            <div class="volume">27,000</div>
+                            <div class="agents">29 agents</div>
+                        </div>
+                        <div class="month-card">
+                            <h4>Q4 Avg</h4>
+                            <div class="volume">30,333</div>
+                            <div class="agents">33 agents</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peak Hours Analysis -->
+                <div class="result-card">
+                    <div class="result-title lang-en">⏰ Peak Hours Analysis (PRO)</div>
+                    <div class="result-title lang-th" style="display: none;">⏰ การวิเคราะห์ช่วงเวลา Peak (PRO)</div>
+                    <p style="color: #718096; margin-bottom: 15px; font-size: 14px;" class="lang-en">
+                        Hourly breakdown showing high/medium/low volume periods
+                    </p>
+                    <p style="color: #718096; margin-bottom: 15px; font-size: 14px; display: none;" class="lang-th">
+                        แสดงช่วงเวลาที่มีปริมาณสูง/กลาง/ต่ำ
+                    </p>
+                    <div class="heatmap-grid">
+                        <div class="heatmap-cell low">0</div>
+                        <div class="heatmap-cell low">1</div>
+                        <div class="heatmap-cell low">2</div>
+                        <div class="heatmap-cell low">3</div>
+                        <div class="heatmap-cell low">4</div>
+                        <div class="heatmap-cell low">5</div>
+                        <div class="heatmap-cell medium">6</div>
+                        <div class="heatmap-cell medium">7</div>
+                        <div class="heatmap-cell high">8</div>
+                        <div class="heatmap-cell high">9</div>
+                        <div class="heatmap-cell high">10</div>
+                        <div class="heatmap-cell high">11</div>
+                        <div class="heatmap-cell high">12</div>
+                        <div class="heatmap-cell high">13</div>
+                        <div class="heatmap-cell high">14</div>
+                        <div class="heatmap-cell medium">15</div>
+                        <div class="heatmap-cell medium">16</div>
+                        <div class="heatmap-cell medium">17</div>
+                        <div class="heatmap-cell medium">18</div>
+                        <div class="heatmap-cell medium">19</div>
+                        <div class="heatmap-cell low">20</div>
+                        <div class="heatmap-cell low">21</div>
+                        <div class="heatmap-cell low">22</div>
+                        <div class="heatmap-cell low">23</div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 14px;">
+                        <span style="color: #48bb78;">●</span> Low (0-6, 20-23)
+                        <span style="color: #f6ad55; margin-left: 15px;">●</span> Medium (7-8, 15-19)
+                        <span style="color: #f56565; margin-left: 15px;">●</span> High (8-15)
+                    </p>
+                </div>
+
+                <!-- Shift Optimization -->
+                <div class="result-card">
+                    <div class="result-title lang-en">🔄 Shift Optimization & Coverage Heatmaps (PRO)</div>
+                    <div class="result-title lang-th" style="display: none;">🔄 การปรับเปลี่ยนกะและ Heatmaps (PRO)</div>
+                    <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-weight: 600; margin-bottom: 10px;" class="lang-en">Recommended Shifts:</p>
+                        <p style="font-weight: 600; margin-bottom: 10px; display: none;" class="lang-th">กะที่แนะนำ:</p>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #48bb78;">
+                                <strong>Morning Shift (8AM-4PM):</strong> 12 agents
+                            </div>
+                            <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #f56565;">
+                                <strong>Day Shift (12PM-8PM):</strong> 15 agents (Peak coverage)
+                            </div>
+                            <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #f6ad55;">
+                                <strong>Evening Shift (4PM-12AM):</strong> 10 agents
+                            </div>
+                            <div style="padding: 12px; background: white; border-radius: 8px; border-left: 4px solid #667eea;">
+                                <strong>Night Shift (12AM-8AM):</strong> 6 agents
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario Planning -->
+                <div class="result-card">
+                    <div class="result-title lang-en">📊 Scenario Planning (PRO)</div>
+                    <div class="result-title lang-th" style="display: none;">📊 การวางแผนสถานการณ์ (PRO)</div>
+                    <div class="scenario-grid">
+                        <div class="scenario-card best">
+                            <div style="font-size: 14px; font-weight: 600; color: #22543d; margin-bottom: 10px;">🎯 Best Case (+20%)</div>
+                            <div style="font-size: 28px; font-weight: bold; color: #48bb78;">32 agents</div>
+                            <div style="font-size: 14px; color: #718096; margin-top: 5px;">Peak month basis</div>
+                        </div>
+                        <div class="scenario-card expected">
+                            <div style="font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 10px;">⭐ Expected Case</div>
+                            <div style="font-size: 28px; font-weight: bold; color: #667eea;">27 agents</div>
+                            <div style="font-size: 14px; color: #718096; margin-top: 5px;">Average forecast</div>
+                        </div>
+                        <div class="scenario-card worst">
+                            <div style="font-size: 14px; font-weight: 600; color: #742a2a; margin-bottom: 10px;">⚠️ Worst Case (-20%)</div>
+                            <div style="font-size: 28px; font-weight: bold; color: #f56565;">22 agents</div>
+                            <div style="font-size: 14px; color: #718096; margin-top: 5px;">Conservative baseline</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Recommendation -->
+                <div class="smart-recommendation">
+                    <h3 class="lang-en">💡 Smart Hiring Recommendation</h3>
+                    <h3 class="lang-th" style="display: none;">💡 คำแนะนำการจ้างงานอัจฉริยะ</h3>
+                    <p class="lang-en">Based on your 12-month forecast, multi-channel mix, and scenario planning:</p>
+                    <p class="lang-th" style="display: none;">จากการคาดการณ์ 12 เดือน หลายช่องทาง และสถานการณ์:</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                            <strong class="lang-en">Full-Time Core</strong>
+                            <strong class="lang-th" style="display: none;">พนักงานประจำ</strong>
+                            <div style="font-size: 28px; margin: 8px 0;">22</div>
+                            <small class="lang-en">Covers worst case</small>
+                            <small class="lang-th" style="display: none;">ครอบคลุมสถานการณ์แย่ที่สุด</small>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                            <strong class="lang-en">Flex/Part-Time</strong>
+                            <strong class="lang-th" style="display: none;">พาร์ทไทม์</strong>
+                            <div style="font-size: 28px; margin: 8px 0;">5-10</div>
+                            <small class="lang-en">For peak periods</small>
+                            <small class="lang-th" style="display: none;">สำหรับช่วง Peak</small>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                            <strong class="lang-en">Total Capacity</strong>
+                            <strong class="lang-th" style="display: none;">กำลังคนทั้งหมด</strong>
+                            <div style="font-size: 28px; margin: 8px 0;">27-32</div>
+                            <small class="lang-en">Scalable range</small>
+                            <small class="lang-th" style="display: none;">ช่วงที่ปรับได้</small>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 20px;" class="lang-en">
+                        💰 <strong>Cost Optimization:</strong> This approach saves ~35% vs hiring 32 full-time staff, while maintaining coverage for all scenarios.
+                    </p>
+                    <p style="margin-top: 20px; display: none;" class="lang-th">
+                        💰 <strong>ประหยัดต้นทุน:</strong> วิธีนี้ประหยัด ~35% เมื่อเทียบกับการจ้างประจำ 32 คน
+                    </p>
+                </div>
+
+                <!-- Export Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="window.print()">
+                        <span class="lang-en">🖨️ Print Report</span>
+                        <span class="lang-th" style="display: none;">🖨️ พิมพ์รายงาน</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="alert('PDF export with charts & detailed breakdown coming soon!')">
+                        <span class="lang-en">📄 Export to PDF (PRO)</span>
+                        <span class="lang-th" style="display: none;">📄 ส่งออก PDF (PRO)</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- STICKY CALCULATE BUTTON (Option B) -->
+    <div class="sticky-calculate-wrapper" id="stickyButton">
+        <div class="progress-indicator">
+            <span class="lang-en">Progress:</span>
+            <span class="lang-th" style="display: none;">ความคืบหน้า:</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="progressText">100%</span>
+        </div>
+        <button class="calculate-btn" onclick="showResults()">
+            <span class="lang-en">📊 Calculate Forecast</span>
+            <span class="lang-th" style="display: none;">📊 คำนวณแผน</span>
+        </button>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        let q1CampaignActive = false;
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (lang === 'en') {
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = '');
+                document.querySelectorAll('.lang-th').forEach(el => el.style.display = 'none');
+            } else {
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.lang-th').forEach(el => el.style.display = '');
+            }
+        }
+
+        function toggleQ1Campaign() {
+            q1CampaignActive = !q1CampaignActive;
+            document.getElementById('q1Campaign').style.display = q1CampaignActive ? 'block' : 'none';
+            document.getElementById('q1Btn').textContent = q1CampaignActive ? '✓ Campaign Added' : '+ Add Campaign';
+            updateProgress();
+        }
+
+        function updateProgress() {
+            // Always show 100% since all fields have default values
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('progressText').textContent = '100%';
+        }
+
+        function showResults() {
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Hide sticky button after calculating
+            document.getElementById('stickyButton').classList.remove('show');
+        }
+
+        // Show sticky button when user scrolls
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            const resultsShown = document.getElementById('resultsSection').classList.contains('show');
+            if (!resultsShown) {
+                document.getElementById('stickyButton').classList.add('show');
+
+                // Auto-hide after 3 seconds of no scrolling
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(function() {
+                    if (window.scrollY < 300) {
+                        document.getElementById('stickyButton').classList.remove('show');
+                    }
+                }, 3000);
+            }
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
