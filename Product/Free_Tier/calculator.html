@@ -1155,45 +1155,52 @@
 
             monthlyData.forEach(data => {
                 if (data.volume > 0) {
-                    // Step 1: Calculate workload-based headcount
-                    const dailyVolume = data.volume / 30; // Monthly to daily
-                    const aht = 1 / cpd; // AHT in hours per contact
-                    const totalWorkHours = dailyVolume * aht; // Total work hours needed per day
+                    // Using proven Binance TH methodology:
+                    // Required HC = (Monthly Volume ÷ 4.33 × AHT) ÷ Work Hours per Week ÷ (1 - Shrinkage) ÷ Occupancy
                     
-                    // Productive hours per agent per day (8 hours * occupancy)
-                    const productiveHoursPerAgent = 8 * occupancy;
-                    const workloadBasedHC = totalWorkHours / productiveHoursPerAgent;
+                    // Constants
+                    const workHoursPerDay = 7.5; // Standard work day in Thailand
+                    const workHoursPerWeek = 37.5; // 7.5 hours × 5 days
+                    const weeksPerMonth = 4.33; // Industry standard
                     
-                    // Step 2: Determine minimum coverage requirement
-                    let minimumCoverage = 0;
-                    let shiftsPerDay = 1;
+                    // Step 1: Convert monthly to weekly volume
+                    const weeklyVolume = data.volume / weeksPerMonth;
                     
+                    // Step 2: Calculate Average Handling Time (AHT)
+                    // AHT = Work Hours per Day ÷ Target CPD
+                    const aht = workHoursPerDay / cpd;
+                    
+                    // Step 3: Calculate weekly workload (hours)
+                    // Workload = Weekly Volume × AHT
+                    const workload = weeklyVolume * aht;
+                    
+                    // Step 4: Calculate base required headcount
+                    // Base HC = Workload ÷ Work Hours per Week
+                    const baseHC = workload / workHoursPerWeek;
+                    
+                    // Step 5: Adjust for shrinkage (AL, SL, PH)
+                    // After Shrinkage = Base HC ÷ (1 - Shrinkage %)
+                    const afterShrinkage = baseHC / (1 - shrinkage);
+                    
+                    // Step 6: Adjust for occupancy (breaks, meetings, system issues)
+                    // Required HC = After Shrinkage ÷ Occupancy
+                    let requiredHC = afterShrinkage / occupancy;
+                    
+                    // Step 7: Apply operating hours multiplier for shift coverage
+                    // 24/7 operations need multiple shifts, business hours need less
+                    let shiftMultiplier = 1;
                     if (hoursType === '24_7') {
-                        shiftsPerDay = 3; // 3 eight-hour shifts
-                        minimumCoverage = 4; // At least 4 agents per shift for minimum coverage
+                        shiftMultiplier = 3.2; // 24/7 needs 3+ shifts with overlap
                     } else if (hoursType === 'extended') {
-                        shiftsPerDay = 2; // 2 shifts for 14 hours
-                        minimumCoverage = 3; // At least 3 agents per shift
+                        shiftMultiplier = 1.8; // Extended hours need ~2 shifts
                     } else {
-                        shiftsPerDay = 1; // Single shift for 9 hours
-                        minimumCoverage = 2; // At least 2 agents for coverage
+                        shiftMultiplier = 1.0; // Business hours = standard calculation
                     }
                     
-                    // Step 3: Calculate agents needed per shift
-                    let agentsPerShift = workloadBasedHC / shiftsPerDay;
-                    agentsPerShift = Math.max(agentsPerShift, minimumCoverage); // Use minimum if workload is low
+                    requiredHC = requiredHC * shiftMultiplier;
                     
-                    // Step 4: Total agents for all shifts
-                    let totalAgents = agentsPerShift * shiftsPerDay;
-                    
-                    // Step 5: Add buffer for days off (7-day operation, 5-day workweek)
-                    // Need ~40% more agents to cover days off (7/5 = 1.4)
-                    const dayOffMultiplier = hoursType === '24_7' ? 1.4 : 1.2;
-                    totalAgents = totalAgents * dayOffMultiplier;
-                    
-                    // Step 6: Apply shrinkage (sick leave, training, breaks)
-                    const afterShrinkage = totalAgents / (1 - shrinkage);
-                    const required = Math.ceil(afterShrinkage);
+                    // Round up (can't hire fraction of a person)
+                    const required = Math.ceil(requiredHC);
 
                     totalRequired += required;
                     monthlyResults.push({
