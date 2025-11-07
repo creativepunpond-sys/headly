@@ -569,18 +569,6 @@
                 <a href="#pricing" class="lang-en">Pricing</a>
                 <a href="#pricing" class="lang-th" style="display: none;">ราคา</a>
 
-                <!-- Auth Buttons (when not logged in) -->
-                <div class="auth-buttons" id="authButtons">
-                    <a href="../../Auth/login.html" class="btn-login">Log In</a>
-                    <a href="../../Auth/signup.html" class="btn-signup">Sign Up</a>
-                </div>
-
-                <!-- User Menu (when logged in) -->
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <span class="user-name" id="userName">User</span>
-                    <button class="btn-logout" onclick="logout()">Logout</button>
-                </div>
 
                 <div class="lang-toggle-nav">
                     <button class="lang-btn-nav active" onclick="switchLanguage('en')">EN</button>
@@ -921,10 +909,10 @@
                         <span class="lang-en">👁️ Preview Pro Features</span>
                         <span class="lang-th" style="display: none;">👁️ ดูตัวอย่าง Pro</span>
                     </a>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="gtag('event', 'upgrade_click', {'tier': 'pro', 'location': 'pricing_section'}); window.location.href='/headly/Product/Payment/checkout-pro.html'">
+                    <a href="/headly/Product/Pro_Tier_Mockup/calculator_pro_final.html" class="btn btn-primary" style="width: 100%; text-decoration: none;" onclick="gtag('event', 'upgrade_click', {'tier': 'pro', 'location': 'pricing_section'});">
                         <span class="lang-en">Get Pro</span>
                         <span class="lang-th" style="display: none;">สมัคร Pro</span>
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Pro Max Plan -->
@@ -962,10 +950,10 @@
                         <span class="lang-en">👁️ Preview Pro Max Features</span>
                         <span class="lang-th" style="display: none;">👁️ ดูตัวอย่าง Pro Max</span>
                     </a>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="gtag('event', 'upgrade_click', {'tier': 'promax', 'location': 'pricing_section'}); window.location.href='/headly/Product/Payment/checkout.html'">
+                    <a href="/headly/Product/Pro_Tier_Mockup/calculator_pro_final.html" class="btn btn-primary" style="width: 100%; text-decoration: none;" onclick="gtag('event', 'upgrade_click', {'tier': 'promax', 'location': 'pricing_section'});">
                         <span class="lang-en">Get Pro Max</span>
                         <span class="lang-th" style="display: none;">สมัคร Pro Max</span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -996,45 +984,7 @@
         </div>
     </footer>
 
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://ncjpkpkobxzinagrhbcl.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5janBrcGtvYnh6aW5hZ3JoYmNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5ODc5MDYsImV4cCI6MjA3NzU2MzkwNn0.tfDeh0bsf-ZjRgM69HWxVAEGpqpuSNBONeCeiZTOfSc';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Check authentication status
-        (async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (session) {
-                // User is logged in
-                const fullName = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
-                const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                
-                document.getElementById('userName').textContent = fullName;
-                document.getElementById('userAvatar').textContent = initials;
-                document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userMenu').style.display = 'flex';
-            } else {
-                // User is not logged in
-                document.getElementById('authButtons').style.display = 'flex';
-                document.getElementById('userMenu').style.display = 'none';
-            }
-        })();
-
-        // Logout function
-        async function logout() {
-            try {
-                await supabase.auth.signOut();
-                window.location.reload();
-            } catch (error) {
-                console.error('Logout error:', error);
-                alert('Failed to logout. Please try again.');
-            }
-        }
 
         // Language switching
         let currentLang = 'en';
